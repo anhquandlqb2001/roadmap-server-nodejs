@@ -23,6 +23,9 @@ class UserController {
   // POST
   register(req: Request, res: Response) {
     console.log("hello im a test branch register");
+    console.log("hello im a test branch register");
+    console.log("hello im a test branch register");
+    console.log("hello im a test branch register");
     
   }
 }
