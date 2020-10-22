@@ -4,10 +4,10 @@ import { Request, Response } from "express";
       /user/...
 */
 class UserController {
-  
+
   // POST
   login(req: Request, res: Response) {
-    req.session.res.json({
+    return res.json({
       errors: [
         { name: ["email"], errors: ["email has not exist"] },
         { name: ["password"], errors: ["wrong password"] },
@@ -22,7 +22,8 @@ class UserController {
 
   // POST
   register(req: Request, res: Response) {
-
+    console.log("hello im a test branch register");
+    
   }
 }
 
