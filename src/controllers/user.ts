@@ -1,18 +1,14 @@
-import { Request, Response } from "express";
+import { ErrorRequestHandler, Request, Response } from "express";
 
 /* 
       /user/...
 */
 class UserController {
-  
-  // POST
-  login(req: Request, res: Response) {
-    req.session.res.json({
-      errors: [
-        { name: ["email"], errors: ["email has not exist"] },
-        { name: ["password"], errors: ["wrong password"] },
-      ],
-    });
+  login(req: Request & { info: string }, res: Response) {
+    if (req.info) {
+      return res.json(req.info);
+    }
+    return res.json({message: "ok"})
   }
 
   // GET: Get current user if exist
@@ -21,9 +17,7 @@ class UserController {
   }
 
   // POST
-  register(req: Request, res: Response) {
-
-  }
+  register(req: Request, res: Response) {}
 }
 
 export default new UserController();
