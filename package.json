@@ -4,19 +4,23 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "connect-redis": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "ioredis": "^4.17.3",
-    "mongoose": "^5.10.9"
+    "mongoose": "^5.10.9",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
   },
   "scripts": {
     "watch": "tsc -w",
     "dev": "nodemon dist/index.js"
   },
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/connect-redis": "^0.0.14",
     "@types/cors": "^2.8.8",
     "@types/dotenv": "^8.2.0",
@@ -24,6 +28,8 @@
     "@types/express-session": "^1.17.0",
     "@types/ioredis": "^4.17.5",
     "@types/mongoose": "^5.7.36",
+    "@types/passport": "^1.0.4",
+    "@types/passport-local": "^1.0.33",
     "nodemon": "^2.0.5",
     "typescript": "^4.0.3"
   }
