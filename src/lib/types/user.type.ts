@@ -3,7 +3,19 @@ import { Document } from "mongoose";
 export default interface IUser extends Document {
   verifyPassword(plainPwd: string): any;
   email: string;
-  password: string;
+  password?: string;
+  provider: 'local' | 'facebook',
+  extend?: {
+    accessToken: string,
+    expiresIn: number,
+    name: string,
+    picture: {
+      data: {
+        height: number,
+        url: string
+      }
+    },
+  }
 }
 
 // {

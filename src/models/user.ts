@@ -14,6 +14,13 @@ const UserSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    provider: {
+      type: String,
+      default: 'local'
+    },
+    extend: {
+      type: Object
+    }
   },
   {
     timestamps: true,
@@ -23,6 +30,9 @@ const UserSchema = new mongoose.Schema(
 
 UserSchema.pre<IUser>("save", async function (next) {
   const oldPwd = this.password;
+  if (!oldPwd) {
+    return next()
+  }
   let newPwd;
   await bcrypt.hash(oldPwd, SALT_ROUNDS).then(function (hash) {
     newPwd = hash;

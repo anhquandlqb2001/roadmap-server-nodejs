@@ -22,5 +22,5 @@ export const formValidate = (email: string, password: string) => {
     } as FormErrorResponse;
   }
 
-  return null
+  return null;
 };
