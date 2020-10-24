@@ -32,13 +32,18 @@ UserSchema.pre<IUser>("save", async function (next) {
 });
 
 UserSchema.methods.verifyPassword = async function (plainPwd: string) {
-  await bcrypt.compare(plainPwd, this.password).then(function (result) {
-    // result == true
-    if (!result) {
-      return false;
-    }
-    return true;
-  });
+  const user: IUser = this
+  try {
+    await bcrypt.compare(plainPwd, user.password).then(function (result) {
+      console.log("result: ", result);
+      if (!result) {
+        return false;
+      }
+      return true;
+    });
+  } catch (error) {
+    console.log("error verifyPwd: ", error);
+  }
 };
 
 export default mongoose.model<IUser>("User", UserSchema);

@@ -7,7 +7,6 @@ const authenticateLocal = (
   res: Response,
   next: NextFunction
 ) => {
-  // console.log('body: ', req.body);
   passport.authenticate("local", { session: false }, function (
     err,
     user: IUser,
@@ -24,7 +23,8 @@ const authenticateLocal = (
     // return next()
     req.session.userID = user._id;
     console.log("session: ", req.session);
-
+    console.log("user: ", req.user);
+    
     req.logIn(user, function (err) {
       if (err) return next(err);
       return next();
