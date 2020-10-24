@@ -43,6 +43,9 @@ Routes(app)
 //   return res.json("update success");
 // });
 
+console.log("Test");
+
+
 
 app.listen(PORT, () => console.log(`server on localhost:${PORT}`));
 
