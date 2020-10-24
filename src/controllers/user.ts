@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { formValidate } from "../lib/util/formValidate";
 import IUser, { FormErrorResponse } from "../lib/types/user.type";
 import { COOKIE_NAME } from "../lib/util/constants";
 import UserModel from "../models/user";
@@ -9,6 +10,12 @@ import UserModel from "../models/user";
 class UserController {
   login(req: Request & { info: string }, res: Response) {
     const { email, password } = req.body;
+    const errors = formValidate(email, password);
+    // validate form login
+    if (errors) {
+      return res.json(errors);
+    }
+
     UserModel.findOne({ email: email }, function (err, user: IUser) {
       if (err) {
         return console.log(err);
@@ -38,7 +45,16 @@ class UserController {
   }
 
   // POST
-  register(req: Request, res: Response) {}
+  register(req: Request, res: Response) {
+    const { email, password } = req.body;
+    const errors = formValidate(email, password);
+    // validate form register
+    if (errors) {
+      return res.json(errors);
+    }
+
+    
+  }
 
   // POST: Logout
   logout(req: Request, res: Response) {
@@ -46,7 +62,7 @@ class UserController {
       req.session.destroy((err) => {
         res.clearCookie(COOKIE_NAME);
         if (err) {
-          return res.json({ message: "fail: ", err });
+          return res.status(500).json({ message: "fail: ", err });
         }
         return res.json({ message: "ok" });
       });
