@@ -4,6 +4,7 @@ import IUser, { FormErrorResponse } from "../lib/types/user.type";
 import { COOKIE_NAME } from "../lib/util/constants";
 import UserModel from "../models/user";
 import findOneOrCreate from "../lib/util/findOneOrCreate";
+import mongoose from "mongoose";
 
 /* 
       /user/...
@@ -46,22 +47,31 @@ class UserController {
   async login_facebook(req: Request, res: Response) {
     const { email } = req.body;
     const user = await findOneOrCreate(email, req.body);
-    
+
     // dang nhap thanh cong
     req.session.userID = user._id;
     return res.json({ message: "ok" });
   }
 
   // GET: Kiem tra thong tin nguoi dung trong session neu ton tai
-  current(req: Request, res: Response) {
-    console.log(req.session);
-    if (!req.session.userID) return res.json({ userid: null });
-    return res.json({ userid: req.session.userID });
+  async current(req: Request, res: Response) {
+    const userID = req.session.userID;
+    if (!userID) return res.json({ userid: null });
+    const user = await UserModel.findById(mongoose.Types.ObjectId(userID));
+    if (!user) {
+      return res.json({ user: null });
+    }
+    const extend = {
+      name: user.extend?.name,
+      picture: user.extend?.picture,
+    };
+
+    return res.json({ email: user.email, extend: extend });
   }
 
   // POST: Dang ky - Provider: local
   async register(req: Request, res: Response) {
-    const { email, password, provider } = req.body;
+    const { email, password } = req.body;
     const errors = formValidate(email, password);
     // kiem tra thong tin dang nhap
     if (errors) {
@@ -76,7 +86,7 @@ class UserController {
         } as FormErrorResponse);
       }
 
-      const user = new UserModel({ email, password, provider });
+      const user = new UserModel({ email, password, provider: "local" });
       try {
         await user.save();
       } catch (error) {
