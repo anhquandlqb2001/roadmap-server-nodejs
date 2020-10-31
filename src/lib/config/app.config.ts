@@ -1,6 +1,6 @@
 import { Application } from "express";
 import session from "express-session";
-import passport from "passport";
+// import passport from "passport";
 import endpoints from "./endpoints.config";
 import { COOKIE_NAME } from "../util/constants";
 import cors from 'cors'
@@ -38,9 +38,9 @@ const config = (app: Application) => {
   app.use(cors({ credentials: true, origin: endpoints.CORS_ORIGIN }));
   app.use(express.json());
   app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(passport.initialize());
-  app.use(passport.session());
-  require("./passport.config")
+  // app.use(passport.initialize());
+  // app.use(passport.session());
+  // require("./passport.config")
 }
 
 export default config

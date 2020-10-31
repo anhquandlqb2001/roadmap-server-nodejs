@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
 import { formValidate } from "../lib/util/formValidate";
-import IUser, { FormErrorResponse } from "../lib/types/user.type";
+import { FormErrorResponse } from "../lib/types/user.type";
 import { COOKIE_NAME } from "../lib/util/constants";
-import UserModel from "../models/user";
-import findOneOrCreate from "../lib/util/findOneOrCreate";
+import findOneAndUpdateOrCreate from "../lib/util/findOneAndUpdateOrCreate";
 import mongoose from "mongoose";
+import User from "../entities/User";
 
-/* 
-      /user/...
-*/
+/**
+ * /user/...
+ **/
 class UserController {
   // POST: Dang nhap voi tai khoan local
-  login_local(req: Request, res: Response) {
+  async login_local(req: Request, res: Response) {
     const { email, password } = req.body;
     // kiem tra thong tin dang nhap
     const errors = formValidate(email, password);
@@ -19,45 +19,44 @@ class UserController {
       return res.json(errors);
     }
 
-    UserModel.findOne({ email: email }, function (err, user: IUser) {
-      if (err) {
-        return console.log(err);
-      }
-      if (!user) {
-        return res.json({
-          errors: [
-            { name: ["email"], errors: ["Sai tai khoan hoac mat khau"] },
-            { name: ["password"], errors: ["Sai tai khoan hoac mat khau"] },
-          ],
-        } as FormErrorResponse);
-      }
-      if (!user.verifyPassword(password)) {
-        return res.json({
-          errors: [{ name: ["password"], errors: ["Sai mat khau"] }],
-        } as FormErrorResponse);
-      }
+    // Kiem tra email co ton tai
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.json({
+        errors: [
+          { name: ["email"], errors: ["Sai tai khoan hoac mat khau"] },
+          { name: ["password"], errors: ["Sai tai khoan hoac mat khau"] },
+        ],
+      } as FormErrorResponse);
+    }
 
-      // dang nhap thanh cong
-      req.session.userID = user._id;
-      return res.json({ message: "ok" });
-    });
-  }
-
-  // POST: Dang nhap voi facebook
-  async login_facebook(req: Request, res: Response) {
-    const { email } = req.body;
-    const user = await findOneOrCreate(email, req.body);
+    // Kiem tra mat khau
+    if (!(await user.verifyPassword(password))) {
+      return res.json({
+        errors: [{ name: ["password"], errors: ["Sai mat khau"] }],
+      } as FormErrorResponse);
+    }
 
     // dang nhap thanh cong
     req.session.userID = user._id;
     return res.json({ message: "ok" });
   }
 
+  // POST: Dang nhap voi facebook
+  async login_facebook(req: Request, res: Response) {
+    const user = await findOneAndUpdateOrCreate(req.body);
+    // dang nhap thanh cong
+    req.session.userID = user._id;
+    return res.json({ success: true });
+  }
+
   // GET: Kiem tra thong tin nguoi dung trong session neu ton tai
   async current(req: Request, res: Response) {
     const userID = req.session.userID;
     if (!userID) return res.json({ userid: null });
-    const user = await UserModel.findById(mongoose.Types.ObjectId(userID));
+    const user = await User.findOne({
+      where: { _id: mongoose.Types.ObjectId(userID) },
+    });
     if (!user) {
       return res.json({ user: null });
     }
@@ -78,25 +77,25 @@ class UserController {
       return res.json(errors);
     }
 
-    await UserModel.findOne({ email: email }, async (err, result) => {
-      if (err) console.log(err);
-      if (result) {
-        return res.json({
-          errors: [{ name: ["email"], errors: ["Email da ton tai"] }],
-        } as FormErrorResponse);
-      }
-
-      const user = new UserModel({ email, password, provider: "local" });
-      try {
-        await user.save();
-      } catch (error) {
-        return res.json({ error });
-      }
-      req.session.userID = user._id;
+    // kiem tra xem email da ton tai chua
+    const _user = await User.findOne({ where: { email } });
+    if (_user) {
       return res.json({
-        success: true,
-        message: "Dang ky tai khoan thanh cong",
-      });
+        errors: [{ name: ["email"], errors: ["Email da ton tai"] }],
+      } as FormErrorResponse);
+    }
+
+    // thuc hien tao user moi
+    try {
+      const user = User.create({ email, password, provider: "local" });
+      await user.save();
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+    return res.json({
+      success: true,
+      message: "Dang ky tai khoan thanh cong",
     });
   }
 
