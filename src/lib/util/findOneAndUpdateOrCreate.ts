@@ -8,7 +8,7 @@ const findOneAndUpdateOrCreate = async (data: User) => {
     return await user.save();
   }
 
-  // cap nhap thong tin nguoi dung
+  // cap nhat thong tin nguoi dung
   await User.update(
     { email: data.email },
     {

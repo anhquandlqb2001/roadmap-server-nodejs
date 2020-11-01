@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import passport from "passport";
-import IUser from "../lib/types/user.type";
 
 const authenticateLocal = (
   req: Request & { info: string },
@@ -9,7 +8,7 @@ const authenticateLocal = (
 ) => {
   passport.authenticate("local", { session: false }, function (
     err,
-    user: IUser,
+    user,
     info
   ) {
     if (err) return next(err);

@@ -24,8 +24,8 @@ class UserController {
     if (!user) {
       return res.json({
         errors: [
-          { name: ["email"], errors: ["Sai tai khoan hoac mat khau"] },
-          { name: ["password"], errors: ["Sai tai khoan hoac mat khau"] },
+          { name: "email", errors: "Sai tai khoan hoac mat khau" },
+          { name: "password", errors: "Sai tai khoan hoac mat khau" },
         ],
       } as FormErrorResponse);
     }
@@ -33,7 +33,7 @@ class UserController {
     // Kiem tra mat khau
     if (!(await user.verifyPassword(password))) {
       return res.json({
-        errors: [{ name: ["password"], errors: ["Sai mat khau"] }],
+        errors: [{ name: "password", errors: "Sai mat khau" }],
       } as FormErrorResponse);
     }
 
@@ -81,7 +81,7 @@ class UserController {
     const _user = await User.findOne({ where: { email } });
     if (_user) {
       return res.json({
-        errors: [{ name: ["email"], errors: ["Email da ton tai"] }],
+        errors: [{ name: "email", errors: "Email da ton tai" }],
       } as FormErrorResponse);
     }
 

@@ -1,6 +1,6 @@
 type FormErrorField = {
-  name: string[];
-  errors: string[];
+  name: string;
+  errors: string;
 };
 
 export type FormErrorResponse = {
