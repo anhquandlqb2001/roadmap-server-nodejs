@@ -46,6 +46,9 @@ export default class User extends BaseEntity {
   provider: ProviderType;
 
   @Column()
+  maps: Object[]
+
+  @Column()
   extend?: UserExtend;
 
   @BeforeInsert()

@@ -1,5 +1,5 @@
-{
-  "roadmap": [
+export const ReactRoad = 
+  [
     {
       "fundamental-topics": [
         {
@@ -114,4 +114,3 @@
       ]
     }
   ]
-}
