@@ -24,23 +24,23 @@ import { createConnection } from "typeorm";
 
 // Routes(app)
 
-// // app.get("/", async (req, res) => {
-// //   UserReactRoad.findOne({}, (err, result) => {
-// //     if (err) {
-// //       return console.log(err);
-// //     }
-// //     return res.json(result);
-// //   });
-// // });
+// app.get("/", async (req, res) => {
+//   UserReactRoad.findOne({}, (err, result) => {
+//     if (err) {
+//       return console.log(err);
+//     }
+//     return res.json(result);
+//   });
+// });
 
-// // app.post("/", async (req, res) => {
-// //   console.log(req.body);
-// //   const user = await UserReactRoad.findOne({ username: req.body.username });
-// //   const newUser = recursiveSearch(user, req.body.field, !req.body.currentValue);
-// //   await UserReactRoad.replaceOne({ username: req.body.username }, newUser);
+// app.post("/", async (req, res) => {
+//   console.log(req.body);
+//   const user = await UserReactRoad.findOne({ username: req.body.username });
+//   const newUser = recursiveSearch(user, req.body.field, !req.body.currentValue);
+//   await UserReactRoad.replaceOne({ username: req.body.username }, newUser);
 
-// //   return res.json("update success");
-// // });`
+//   return res.json("update success");
+// });`
 
 // console.log("Test");
 

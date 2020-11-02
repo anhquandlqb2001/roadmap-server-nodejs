@@ -1,31 +1,30 @@
 import { BaseEntity, Column, Entity, ObjectID, ObjectIdColumn } from "typeorm";
 
-export type IVote = 'upvote' | 'downvote'
+export type IVote = "upvote" | "downvote";
 
 export class Vote {
   @ObjectIdColumn()
-  _id: ObjectID
+  _id: ObjectID;
 
   @Column()
-  type: IVote
+  type: IVote;
 }
 
 export class Star {
   @ObjectIdColumn()
-  _id: ObjectID
+  _id: ObjectID;
 }
 
 export class Comment {
   @ObjectIdColumn()
-  _id: ObjectID
+  _id: ObjectID;
 
   @Column()
-  text: string
+  text: string;
 
   @Column()
-  vote: Vote
+  vote: Vote;
 }
-
 
 class ReactMap {
   @ObjectIdColumn()
@@ -149,37 +148,36 @@ class ReactMap {
         ];
       }
     ];
-    comments: Comment
-    stars: Star
+    comments: Comment;
+    stars: Star;
   };
-
 }
 
+type MapType = "reactroad" | "fontendroad";
 
-type MapType = 'reactroad' | 'fontendroad'
+class FrontEndMap {}
 
-class FrontEndMap {
-
-}
-
-class Maps {
+export class Maps {
   @Column()
-  reactroad: ReactMap
+  reactroad: ReactMap;
 
   @Column()
-  frontendroad: FrontEndMap
+  frontendroad: FrontEndMap;
 }
-
-
 
 @Entity({ name: "roads" })
 export default class Road extends BaseEntity {
   @ObjectIdColumn()
-  _id: ObjectID
-
+  _id: ObjectID;
 
   @Column()
-  name: MapType
+  name: MapType;
+
+  @Column()
+  comments: Comment;
+
+  @Column()
+  stars: Star;
 
   // @Column()
   // maps: Maps

@@ -5,6 +5,8 @@ import { COOKIE_NAME } from "../lib/util/constants";
 import findOneAndUpdateOrCreate from "../lib/util/findOneAndUpdateOrCreate";
 import mongoose from "mongoose";
 import User from "../entities/User";
+import { ReactRoad } from "../lib/util/maps";
+import recursiveSearch from "../lib/util/searchMapChange";
 
 /**
  * /user/...
@@ -110,6 +112,50 @@ class UserController {
         return res.json({ message: "ok" });
       });
     });
+  }
+
+  async react_start(req: Request, res: Response) {
+    console.log("here");
+    const userID = req.session.userID;
+    const user = await User.findOne({
+      where: { _id: mongoose.Types.ObjectId(userID) },
+    });
+    user.maps = { ...user.maps, reactroad: ReactRoad as any };
+
+    await user.save();
+  }
+
+  async get_react_map(req: Request, res: Response) {
+    const userID = req.session.userID;
+    const user = await User.findOne({
+      where: { _id: mongoose.Types.ObjectId(userID) },
+    });
+
+    if (!user.maps?.reactroad) {
+      return res.json({
+        success: false,
+        message: "Ban chua dang ky lo trinh nay",
+      });
+    }
+    return res.json({
+      success: true,
+      data: user.maps.reactroad,
+    });
+  }
+
+  async change_field_react_map(req: Request, res: Response) {
+    const userID = req.session.userID;
+    const userObjectID = mongoose.Types.ObjectId(userID);
+    const user = await User.findOne({ where: { _id: userObjectID } });
+
+    const newMap = recursiveSearch(
+      user.maps.reactroad,
+      req.body.field,
+      !req.body.currentValue
+    );
+    await User.update({ _id: userObjectID }, { maps: { reactroad: newMap } });
+
+    return res.json("update success");
   }
 }
 

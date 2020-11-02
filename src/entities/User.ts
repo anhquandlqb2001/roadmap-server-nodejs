@@ -9,6 +9,7 @@ import {
 import { ProviderType } from "../lib/types/user.type";
 import bcrypt from "bcrypt";
 import { SALT_ROUNDS } from "../lib/util/constants";
+import { Maps } from "./Road";
 
 type UserPictureType = {
   data: {
@@ -46,7 +47,7 @@ export default class User extends BaseEntity {
   provider: ProviderType;
 
   @Column()
-  maps: Object[]
+  maps: Maps
 
   @Column()
   extend?: UserExtend;

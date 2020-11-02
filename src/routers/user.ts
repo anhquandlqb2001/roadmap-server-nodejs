@@ -13,4 +13,10 @@ router.get("/current", UserController.current);
 
 router.post("/logout", UserController.logout)
 
+router.post("/react/start", UserController.react_start)
+
+router.get("/react", UserController.get_react_map)
+
+router.post("/react", UserController.change_field_react_map)
+
 export default router;
