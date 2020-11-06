@@ -1,16 +1,41 @@
 import { Request, Response } from "express";
 import { formValidate } from "../lib/util/formValidate";
-import { FormErrorResponse } from "../lib/types/user.type";
-import { COOKIE_NAME } from "../lib/util/constants";
+import {
+  EProvider,
+  IResponseError,
+  IResponseServer,
+  IResponseLoginSuccess,
+  IResponseCurrentUser,
+} from "../lib/types/user.type";
 import findOneAndUpdateOrCreate from "../lib/util/findOneAndUpdateOrCreate";
 import mongoose from "mongoose";
 import User from "../entities/User";
 import { ReactRoad } from "../lib/util/maps";
 import recursiveSearch from "../lib/util/searchMapChange";
+import { EMap } from "../lib/types/map.type";
+import logoutFn from "../lib/util/logout";
 
 /**
  * /user/...
  **/
+
+// kiem tra xem nguoi dung da dang ki lo trinh chua
+// neu chua => return false
+function checkStartMap(user: User, map: EMap) {
+  switch (map) {
+    case EMap.React:
+      if (user.maps?.react) return { isTrue: true, _map: user.maps?.react };
+      break;
+    case EMap.FrontEnd:
+      if (user.maps?.frontend)
+        return { isTrue: true, _map: user.maps?.frontend };
+      break;
+
+    default:
+      return { isTrue: false, _map: null };
+  }
+}
+
 class UserController {
   // POST: Dang nhap voi tai khoan local
   async login_local(req: Request, res: Response) {
@@ -25,23 +50,28 @@ class UserController {
     const user = await User.findOne({ where: { email } });
     if (!user) {
       return res.json({
+        success: false,
         errors: [
-          { name: "email", errors: "Sai tai khoan hoac mat khau" },
-          { name: "password", errors: "Sai tai khoan hoac mat khau" },
+          { name: "email", error: "Sai tai khoan hoac mat khau" },
+          { name: "password", error: "Sai tai khoan hoac mat khau" },
         ],
-      } as FormErrorResponse);
+      } as IResponseError);
     }
 
     // Kiem tra mat khau
     if (!(await user.verifyPassword(password))) {
       return res.json({
-        errors: [{ name: "password", errors: "Sai mat khau" }],
-      } as FormErrorResponse);
+        success: false,
+        errors: [{ name: "password", error: "Sai mat khau" }],
+      } as IResponseError);
     }
 
     // dang nhap thanh cong
     req.session.userID = user._id;
-    return res.json({ message: "ok" });
+    return res.json({
+      success: true,
+      data: { email: user.email },
+    } as IResponseLoginSuccess);
   }
 
   // POST: Dang nhap voi facebook
@@ -49,7 +79,10 @@ class UserController {
     const user = await findOneAndUpdateOrCreate(req.body);
     // dang nhap thanh cong
     req.session.userID = user._id;
-    return res.json({ success: true });
+    return res.json({
+      success: true,
+      data: { email: user.email },
+    } as IResponseLoginSuccess);
   }
 
   // GET: Kiem tra thong tin nguoi dung trong session neu ton tai
@@ -60,14 +93,22 @@ class UserController {
       where: { _id: mongoose.Types.ObjectId(userID) },
     });
     if (!user) {
-      return res.json({ user: null });
+      return res.json({ success: false, user: null });
     }
     const extend = {
       name: user.extend?.name,
       picture: user.extend?.picture,
     };
 
-    return res.json({ email: user.email, extend: extend });
+    return res.json({
+      success: true,
+      user: {
+        email: user.email,
+        extend: extend,
+        jwt: "aloalo123",
+        provider: user.provider,
+      },
+    } as IResponseCurrentUser);
   }
 
   // POST: Dang ky - Provider: local
@@ -83,13 +124,14 @@ class UserController {
     const _user = await User.findOne({ where: { email } });
     if (_user) {
       return res.json({
-        errors: [{ name: "email", errors: "Email da ton tai" }],
-      } as FormErrorResponse);
+        success: false,
+        errors: [{ name: "email", error: "Email da ton tai" }],
+      } as IResponseError);
     }
 
     // thuc hien tao user moi
     try {
-      const user = User.create({ email, password, provider: "local" });
+      const user = User.create({ email, password, provider: EProvider.Local });
       await user.save();
     } catch (error) {
       console.log(error);
@@ -103,44 +145,57 @@ class UserController {
 
   // POST: Dang xuat
   logout(req: Request, res: Response) {
-    return new Promise((_, __) => {
-      req.session.destroy((err) => {
-        res.clearCookie(COOKIE_NAME);
-        if (err) {
-          return res.status(500).json({ message: "fail: ", err });
-        }
-        return res.json({ message: "ok" });
-      });
-    });
+    return logoutFn(req, res);
   }
 
-  async react_start(req: Request, res: Response) {
-    console.log("here");
+  //
+  async start_map(req: Request, res: Response) {
+    const map = req.body.map;
+    if (!map) {
+      return res.status(404);
+    }
     const userID = req.session.userID;
-    const user = await User.findOne({
-      where: { _id: mongoose.Types.ObjectId(userID) },
-    });
-    user.maps = { ...user.maps, reactroad: ReactRoad as any };
+    let user;
+    switch (map) {
+      case EMap.React:
+        user = await User.findOne({
+          where: { _id: mongoose.Types.ObjectId(userID) },
+        });
+        break;
+
+      default:
+        break;
+    }
+
+    user.maps = { ...user.maps, react: ReactRoad as any };
 
     await user.save();
+    return res.json({
+      success: true,
+      message: "Bat dau lo trinh moi thanh cong",
+    } as IResponseServer);
   }
 
-  async get_react_map(req: Request, res: Response) {
+  async get_map(req: Request, res: Response) {
     const userID = req.session.userID;
+    const map = req.params.map;
     const user = await User.findOne({
       where: { _id: mongoose.Types.ObjectId(userID) },
     });
-
-    if (!user.maps?.reactroad) {
+    if (!user) {
+      return logoutFn(req, res);
+    }
+    const { isTrue, _map } = checkStartMap(user, map as any);
+    if (!isTrue) {
       return res.json({
         success: false,
         message: "Ban chua dang ky lo trinh nay",
-      });
+      } as IResponseServer);
     }
     return res.json({
       success: true,
-      data: user.maps.reactroad,
-    });
+      map: _map,
+    } as IResponseServer);
   }
 
   async change_field_react_map(req: Request, res: Response) {
@@ -149,13 +204,39 @@ class UserController {
     const user = await User.findOne({ where: { _id: userObjectID } });
 
     const newMap = recursiveSearch(
-      user.maps.reactroad,
+      user.maps.react,
       req.body.field,
       !req.body.currentValue
     );
-    await User.update({ _id: userObjectID }, { maps: { reactroad: newMap } });
+    await User.update({ _id: userObjectID }, { maps: { react: newMap } });
 
     return res.json("update success");
+  }
+
+  async change_field_map(req: Request, res: Response) {
+    const userID = req.session.userID;
+    const userObjectID = mongoose.Types.ObjectId(userID);
+    const map = req.params.map;
+
+    const user = await User.findOne({ where: { _id: userObjectID } });
+    if (!user) return logoutFn(req, res);
+
+    const { isTrue, _map } = checkStartMap(user, map as any);
+
+    if (!isTrue) {
+      return res.json({
+        success: false,
+        message: "Ban chua dang ky lo trinh nay",
+      } as IResponseServer);
+    }
+
+    const newMap = recursiveSearch(_map, req.body.field, !req.body.currentValue);
+    await User.update({ _id: userObjectID }, { maps: { react: newMap } });
+
+    return res.json({
+      success: true,
+      message: "Cap nhat thanh cong",
+    } as IResponseServer);
   }
 }
 

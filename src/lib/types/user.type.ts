@@ -1,10 +1,37 @@
+import { UserExtend } from "../../entities/User";
+
 type FormErrorField = {
   name: string;
-  errors: string;
+  error: string;
 };
 
-export type FormErrorResponse = {
+// user provider
+export enum EProvider {
+  Local = "LOCAL",
+  Facebook = "FACEBOOK"
+}
+
+export interface IResponseServer {
+  success: boolean;
+  message?: string;
+}
+
+export interface IResponseLoginSuccess extends IResponseServer {
+  data: {
+    email: string;
+    jwt?: string;
+  };
+}
+
+export interface IResponseError extends IResponseServer {
   errors: FormErrorField[];
-};
+}
 
-export type ProviderType = 'local' | 'facebook'
+export interface IResponseCurrentUser extends IResponseServer {
+  user: {
+    email: string,
+    extend?: UserExtend,
+    jwt?: string,
+    provider: EProvider,
+  },
+}

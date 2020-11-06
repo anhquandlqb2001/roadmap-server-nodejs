@@ -13,9 +13,11 @@ router.get("/current", UserController.current);
 
 router.post("/logout", UserController.logout)
 
-router.post("/react/start", UserController.react_start)
+router.post("/startmap", UserController.start_map)
 
-router.get("/react", UserController.get_react_map)
+router.get("/get_map/:map", UserController.get_map)
+
+router.post("/:map", UserController.change_field_map)
 
 router.post("/react", UserController.change_field_react_map)
 

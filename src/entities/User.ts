@@ -6,7 +6,7 @@ import {
   ObjectID,
   ObjectIdColumn,
 } from "typeorm";
-import { ProviderType } from "../lib/types/user.type";
+import { EProvider } from "../lib/types/user.type";
 import bcrypt from "bcrypt";
 import { SALT_ROUNDS } from "../lib/util/constants";
 import { Maps } from "./Road";
@@ -44,7 +44,7 @@ export default class User extends BaseEntity {
   password?: string;
 
   @Column()
-  provider: ProviderType;
+  provider: EProvider;
 
   @Column()
   maps: Maps
