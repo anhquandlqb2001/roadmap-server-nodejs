@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "engines": {
-    "yarn": "1.22.5"
+    "yarn": "1.22.5",
+    "node": "14.11.0"
   },
   "license": "MIT",
   "dependencies": {
