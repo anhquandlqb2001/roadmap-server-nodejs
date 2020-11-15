@@ -14,7 +14,7 @@ import { ReactRoad } from "../lib/util/maps";
 import recursiveSearch from "../lib/util/searchMapChange";
 import { EMap } from "../lib/types/map.type";
 import logoutFn from "../lib/util/logout";
-
+import getUserByMapName from '../lib/util/getUserByRoadName'
 /**
  * /user/...
  **/
@@ -35,6 +35,7 @@ function checkStartMap(user: User, map: EMap) {
       return { isTrue: false, _map: null };
   }
 }
+
 
 class UserController {
   // POST: Dang nhap voi tai khoan local
@@ -155,18 +156,19 @@ class UserController {
       return res.status(404);
     }
     const userID = req.session.userID;
-    let user;
-    switch (map) {
-      case EMap.React:
-        user = await User.findOne({
-          where: { _id: mongoose.Types.ObjectId(userID) },
-        });
-        break;
+    // let user;
 
-      default:
-        break;
-    }
+    // switch (map) {
+    //   case EMap.React:
+    //     user = await User.findOne({
+    //       where: { _id: mongoose.Types.ObjectId(userID) },
+    //     });
+    //     break;
 
+    //   default:
+    //     break;
+    // }
+    const user = await getUserByMapName(map, userID)
     user.maps = { ...user.maps, react: ReactRoad as any };
 
     await user.save();
@@ -176,15 +178,17 @@ class UserController {
     } as IResponseServer);
   }
 
+  
   async get_map(req: Request, res: Response) {
     const userID = req.session.userID;
-    const map = req.params.map;
     const user = await User.findOne({
       where: { _id: mongoose.Types.ObjectId(userID) },
     });
     if (!user) {
       return logoutFn(req, res);
     }
+
+    const map = req.params.map;
     const { isTrue, _map } = checkStartMap(user, map as any);
     if (!isTrue) {
       return res.json({

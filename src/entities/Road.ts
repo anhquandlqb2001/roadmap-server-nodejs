@@ -1,53 +1,56 @@
 import { EMap, TReact } from "../lib/types/map.type";
-import { BaseEntity, Column, Entity, ObjectID, ObjectIdColumn } from "typeorm";
+import { BaseEntity, Column, Entity, ObjectID, ObjectIdColumn, PrimaryGeneratedColumn } from "typeorm";
+import { mongo} from "mongoose";
 
-export type IVote = "upvote" | "downvote";
+
+export enum EVote {
+  Upvote = "UPVOTE",
+  Downvote = "DOWNVOTE"
+}
 
 export class Vote {
   @ObjectIdColumn()
-  _id: ObjectID;
+  userID: ObjectID;
 
   @Column()
-  type: IVote;
+  type: EVote;
 }
 
 export class Star {
   @ObjectIdColumn()
-  _id: ObjectID;
+  userID: ObjectID;
 }
 
-export class Comment {
+class CommentBase {
+  @ObjectIdColumn({default: true})
+  _id: ObjectID = new mongo.ObjectId() as any
+
   @ObjectIdColumn()
-  _id: ObjectID;
+  userID: ObjectID
 
   @Column()
   text: string;
-
-  @Column()
-  vote: Vote;
 }
 
-class ReactMap {
-  @ObjectIdColumn()
-  _id: ObjectID;
+export class Comment extends CommentBase {
+  @Column({ default: true })
+  reply?: CommentBase[] = [];
 
-  @Column()
-  map: {
-    username: "quanprolazer";
-    roadmap: TReact
-    comments: Comment;
-    stars: Star;
-  };
+  @Column({ default: true })
+  vote?: Vote[] = [];
 }
 
-class FrontEndMap {}
+
+export interface IMap {
+  react: string;
+}
 
 export class Maps {
   @Column()
-  react: ReactMap;
+  react: EMap.React;
 
   @Column()
-  frontend: FrontEndMap;
+  frontend: EMap.FrontEnd;
 }
 
 @Entity({ name: "roads" })
@@ -58,12 +61,10 @@ export default class Road extends BaseEntity {
   @Column()
   name: EMap;
 
-  @Column()
-  comments: Comment;
+  @Column({ default: true })
+  comments: Comment[] = []
 
-  @Column()
-  stars: Star;
+  @Column({ default: true })
+  stars: Star[] = [];
 
-  // @Column()
-  // maps: Maps
 }

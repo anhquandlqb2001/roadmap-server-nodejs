@@ -21,6 +21,7 @@ const maps_1 = require("../lib/util/maps");
 const searchMapChange_1 = __importDefault(require("../lib/util/searchMapChange"));
 const map_type_1 = require("../lib/types/map.type");
 const logout_1 = __importDefault(require("../lib/util/logout"));
+const getUserByRoadName_1 = __importDefault(require("../lib/util/getUserByRoadName"));
 /**
  * /user/...
  **/
@@ -161,16 +162,17 @@ class UserController {
                 return res.status(404);
             }
             const userID = req.session.userID;
-            let user;
-            switch (map) {
-                case map_type_1.EMap.React:
-                    user = yield User_1.default.findOne({
-                        where: { _id: mongoose_1.default.Types.ObjectId(userID) },
-                    });
-                    break;
-                default:
-                    break;
-            }
+            // let user;
+            // switch (map) {
+            //   case EMap.React:
+            //     user = await User.findOne({
+            //       where: { _id: mongoose.Types.ObjectId(userID) },
+            //     });
+            //     break;
+            //   default:
+            //     break;
+            // }
+            const user = yield getUserByRoadName_1.default(map, userID);
             user.maps = Object.assign(Object.assign({}, user.maps), { react: maps_1.ReactRoad });
             yield user.save();
             return res.json({
@@ -182,13 +184,13 @@ class UserController {
     get_map(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const userID = req.session.userID;
-            const map = req.params.map;
             const user = yield User_1.default.findOne({
                 where: { _id: mongoose_1.default.Types.ObjectId(userID) },
             });
             if (!user) {
                 return logout_1.default(req, res);
             }
+            const map = req.params.map;
             const { isTrue, _map } = checkStartMap(user, map);
             if (!isTrue) {
                 return res.json({
