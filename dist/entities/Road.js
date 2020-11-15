@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Maps = exports.Comment = exports.Star = exports.Vote = exports.EVote = void 0;
+exports.Maps = exports.Comment = exports.Vote = exports.EVote = void 0;
 const map_type_1 = require("../lib/types/map.type");
 const typeorm_1 = require("typeorm");
 const mongoose_1 = require("mongoose");
@@ -29,13 +29,6 @@ __decorate([
     __metadata("design:type", String)
 ], Vote.prototype, "type", void 0);
 exports.Vote = Vote;
-class Star {
-}
-__decorate([
-    typeorm_1.ObjectIdColumn(),
-    __metadata("design:type", typeorm_1.ObjectID)
-], Star.prototype, "userID", void 0);
-exports.Star = Star;
 class CommentBase {
     constructor() {
         this._id = new mongoose_1.mongo.ObjectId();

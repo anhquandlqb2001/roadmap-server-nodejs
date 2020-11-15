@@ -11,5 +11,6 @@ router.post("/add_map", roadmap_1.default.add_road);
 router.post("/add_comment", isAuth_1.default, roadmap_1.default.add_comment);
 router.post("/reply_comment", isAuth_1.default, roadmap_1.default.reply_comment);
 router.post("/vote_comment", isAuth_1.default, roadmap_1.default.vote_comment);
+router.post("/star_map", isAuth_1.default, roadmap_1.default.star_map);
 exports.default = router;
 //# sourceMappingURL=roadmap.js.map

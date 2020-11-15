@@ -34,6 +34,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Road_1 = __importStar(require("../entities/Road"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const typeorm_1 = require("typeorm");
+const getRoadByRoadName_1 = __importDefault(require("../lib/util/getRoadByRoadName"));
 class RoadMapController {
     add_road(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -114,7 +115,6 @@ class RoadMapController {
             const oldVote = road.comments[cmtIndex].vote;
             const findIndex = oldVote.findIndex((vote) => vote.userID.toString() === userID);
             if (findIndex === -1) {
-                console.log('here');
                 yield typeorm_1.getMongoRepository(Road_1.default).findOneAndUpdate({
                     "comments._id": mongoose_1.default.Types.ObjectId(commentID),
                 }, {
@@ -124,7 +124,7 @@ class RoadMapController {
                 });
                 return res.json({ success: true });
             }
-            const newVote = oldVote.map(vote => {
+            const newVote = oldVote.map((vote) => {
                 if (vote.userID.toString() === userID) {
                     return Object.assign(Object.assign({}, vote), { type: type });
                 }
@@ -142,7 +142,21 @@ class RoadMapController {
     }
     star_map(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const userObjID = mongoose_1.default.Types.ObjectId(req.session.userID);
+            const { map } = req.body;
+            const userID = req.session.userID;
+            const userObjID = mongoose_1.default.Types.ObjectId(userID);
+            const road = yield getRoadByRoadName_1.default(map);
+            const oldStar = road.stars;
+            const findIndex = oldStar.findIndex((star) => star.toString() === userID);
+            if (findIndex === -1) {
+                road.stars = [...oldStar, userObjID];
+                yield road.save();
+                return res.json({ success: true });
+            }
+            const newStar = oldStar.filter((star) => star.toString() !== userID);
+            road.stars = newStar;
+            yield road.save();
+            return res.json({ success: true });
         });
     }
 }

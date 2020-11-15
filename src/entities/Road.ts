@@ -16,10 +16,7 @@ export class Vote {
   type: EVote;
 }
 
-export class Star {
-  @ObjectIdColumn()
-  userID: ObjectID;
-}
+
 
 class CommentBase {
   @ObjectIdColumn({default: true})
@@ -65,6 +62,6 @@ export default class Road extends BaseEntity {
   comments: Comment[] = []
 
   @Column({ default: true })
-  stars: Star[] = [];
+  stars: ObjectID[] = []
 
 }

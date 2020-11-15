@@ -13,4 +13,6 @@ router.post("/reply_comment", isAuth, RoadMapController.reply_comment)
 
 router.post("/vote_comment", isAuth, RoadMapController.vote_comment)
 
+router.post("/star_map", isAuth, RoadMapController.star_map)
+
 export default router

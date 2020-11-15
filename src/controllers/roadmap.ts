@@ -3,6 +3,7 @@ import { EMap } from "../lib/types/map.type";
 import Road, { Comment } from "../entities/Road";
 import mongoose from "mongoose";
 import { getMongoRepository } from "typeorm";
+import getRoadByRoadName from "../lib/util/getRoadByRoadName";
 
 class RoadMapController {
   async add_road(req: Request, res: Response) {
@@ -99,8 +100,6 @@ class RoadMapController {
     );
 
     if (findIndex === -1) {
-      console.log('here');
-      
       await getMongoRepository(Road).findOneAndUpdate(
         {
           "comments._id": mongoose.Types.ObjectId(commentID),
@@ -114,12 +113,12 @@ class RoadMapController {
       return res.json({ success: true });
     }
 
-    const newVote = oldVote.map(vote => {
+    const newVote = oldVote.map((vote) => {
       if (vote.userID.toString() === userID) {
-        return {...vote, type: type}
+        return { ...vote, type: type };
       }
-      return vote
-    })
+      return vote;
+    });
 
     await getMongoRepository(Road).findOneAndUpdate(
       {
@@ -135,8 +134,26 @@ class RoadMapController {
   }
 
   async star_map(req: Request, res: Response) {
-    const userObjID = mongoose.Types.ObjectId(req.session.userID)
-    
+    const { map } = req.body;
+    const userID = req.session.userID;
+    const userObjID = mongoose.Types.ObjectId(userID);
+
+    const road = await getRoadByRoadName(map);
+
+    const oldStar = road.stars;
+    const findIndex = oldStar.findIndex((star) => star.toString() === userID);
+
+    if (findIndex === -1) {
+      road.stars = [...oldStar, userObjID] as any;
+      await road.save();
+      return res.json({ success: true });
+    }
+
+    const newStar = oldStar.filter((star) => star.toString() !== userID);
+    road.stars = newStar;
+
+    await road.save();
+    return res.json({ success: true });
   }
 }
 
