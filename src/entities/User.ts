@@ -10,6 +10,7 @@ import { EProvider } from "../lib/types/user.type";
 import bcrypt from "bcrypt";
 import { SALT_ROUNDS } from "../lib/util/constants";
 import { Maps } from "./Road";
+import mongoose from 'mongoose'
 
 type UserPictureType = {
   data: {
@@ -41,6 +42,9 @@ export default class User extends BaseEntity {
   email: string;
 
   @Column()
+  noteText: string
+
+  @Column()
   password?: string;
 
   @Column()
@@ -70,6 +74,10 @@ export default class User extends BaseEntity {
     } catch (error) {
       console.log("error verifyPwd: ", error);
     }
+  }
+
+  getIdString() {
+    return this._id.toString()
   }
 }
 

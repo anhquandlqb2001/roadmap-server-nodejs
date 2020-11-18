@@ -6,13 +6,19 @@ const router = express.Router()
 
 router.post("/add_map", RoadMapController.add_road)
 
-router.post("/add_comment", isAuth, RoadMapController.add_comment)
+// them binh luan
+router.put("/:id/comment", isAuth, RoadMapController.add_comment)
 
-router.post("/reply_comment", isAuth, RoadMapController.reply_comment)
+// tra loi binh luan
+router.put("/:id/comment/:commentID/reply", isAuth, RoadMapController.reply_comment)
 
+// vote binh luan
+router.put("/:id/comment/:commentID/vote", isAuth, RoadMapController.vote_comment)
 
-router.post("/vote_comment", isAuth, RoadMapController.vote_comment)
+// binh chon road
+router.put("/:id/star", isAuth, RoadMapController.star_map)
 
-router.post("/star_map", isAuth, RoadMapController.star_map)
+// lay du lieu road
+router.get("/:id/list", RoadMapController.get_list_road)
 
 export default router

@@ -69,6 +69,9 @@ let User = class User extends typeorm_1.BaseEntity {
             }
         });
     }
+    getIdString() {
+        return this._id.toString();
+    }
 };
 __decorate([
     typeorm_1.ObjectIdColumn(),
@@ -78,6 +81,10 @@ __decorate([
     typeorm_1.Column({ unique: true }),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
+__decorate([
+    typeorm_1.Column(),
+    __metadata("design:type", String)
+], User.prototype, "noteText", void 0);
 __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)

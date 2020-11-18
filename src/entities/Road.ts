@@ -44,10 +44,10 @@ export interface IMap {
 
 export class Maps {
   @Column()
-  react: EMap.React;
+  REACT: EMap.React;
 
   @Column()
-  frontend: EMap.FrontEnd;
+  FRONT_END: EMap.FrontEnd;
 }
 
 @Entity({ name: "roads" })

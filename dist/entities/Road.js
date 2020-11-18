@@ -67,11 +67,11 @@ class Maps {
 __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)
-], Maps.prototype, "react", void 0);
+], Maps.prototype, "REACT", void 0);
 __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)
-], Maps.prototype, "frontend", void 0);
+], Maps.prototype, "FRONT_END", void 0);
 exports.Maps = Maps;
 let Road = class Road extends typeorm_1.BaseEntity {
     constructor() {

@@ -21,7 +21,8 @@ const maps_1 = require("../lib/util/maps");
 const searchMapChange_1 = __importDefault(require("../lib/util/searchMapChange"));
 const map_type_1 = require("../lib/types/map.type");
 const logout_1 = __importDefault(require("../lib/util/logout"));
-const getUserByRoadName_1 = __importDefault(require("../lib/util/getUserByRoadName"));
+const Note_1 = __importDefault(require("../entities/Note"));
+const typeorm_1 = require("typeorm");
 /**
  * /user/...
  **/
@@ -31,12 +32,12 @@ function checkStartMap(user, map) {
     var _a, _b, _c, _d;
     switch (map) {
         case map_type_1.EMap.React:
-            if ((_a = user.maps) === null || _a === void 0 ? void 0 : _a.react)
-                return { isTrue: true, _map: (_b = user.maps) === null || _b === void 0 ? void 0 : _b.react };
+            if ((_a = user.maps) === null || _a === void 0 ? void 0 : _a.REACT)
+                return { isTrue: true, _map: (_b = user.maps) === null || _b === void 0 ? void 0 : _b.REACT };
             break;
         case map_type_1.EMap.FrontEnd:
-            if ((_c = user.maps) === null || _c === void 0 ? void 0 : _c.frontend)
-                return { isTrue: true, _map: (_d = user.maps) === null || _d === void 0 ? void 0 : _d.frontend };
+            if ((_c = user.maps) === null || _c === void 0 ? void 0 : _c.FRONT_END)
+                return { isTrue: true, _map: (_d = user.maps) === null || _d === void 0 ? void 0 : _d.FRONT_END };
             break;
         default:
             return { isTrue: false, _map: null };
@@ -161,19 +162,26 @@ class UserController {
             if (!map) {
                 return res.status(404);
             }
-            const userID = req.session.userID;
-            // let user;
-            // switch (map) {
-            //   case EMap.React:
-            //     user = await User.findOne({
-            //       where: { _id: mongoose.Types.ObjectId(userID) },
-            //     });
-            //     break;
-            //   default:
-            //     break;
-            // }
-            const user = yield getUserByRoadName_1.default(map, userID);
-            user.maps = Object.assign(Object.assign({}, user.maps), { react: maps_1.ReactRoad });
+            const user = yield User_1.default.findOne(req.session.userID);
+            for (const key in user.maps) {
+                console.log(key);
+                if (key === map) {
+                    return res.json({
+                        success: false,
+                        message: "Ban da bat dau lo trinh nay roi!",
+                    });
+                }
+            }
+            switch (map) {
+                case map_type_1.EMap.React:
+                    user.maps = Object.assign(Object.assign({}, user.maps), { REACT: maps_1.ReactRoad });
+                    break;
+                case map_type_1.EMap.FrontEnd:
+                    user.maps = Object.assign(Object.assign({}, user.maps), { FRONT_END: {} });
+                    break;
+                default:
+                    break;
+            }
             yield user.save();
             return res.json({
                 success: true,
@@ -209,8 +217,8 @@ class UserController {
             const userID = req.session.userID;
             const userObjectID = mongoose_1.default.Types.ObjectId(userID);
             const user = yield User_1.default.findOne({ where: { _id: userObjectID } });
-            const newMap = searchMapChange_1.default(user.maps.react, req.body.field, !req.body.currentValue);
-            yield User_1.default.update({ _id: userObjectID }, { maps: { react: newMap } });
+            const newMap = searchMapChange_1.default(user.maps.REACT, req.body.field, !req.body.currentValue);
+            yield User_1.default.update({ _id: userObjectID }, { maps: { REACT: newMap } });
             return res.json("update success");
         });
     }
@@ -230,11 +238,24 @@ class UserController {
                 });
             }
             const newMap = searchMapChange_1.default(_map, req.body.field, !req.body.currentValue);
-            yield User_1.default.update({ _id: userObjectID }, { maps: { react: newMap } });
+            yield User_1.default.update({ _id: userObjectID }, { maps: { REACT: newMap } });
             return res.json({
                 success: true,
                 message: "Cap nhat thanh cong",
             });
+        });
+    }
+    note_post(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { noteText, map } = req.body;
+            const userID = req.session.userID;
+            yield typeorm_1.getMongoRepository(Note_1.default).updateOne({ userID: mongoose_1.default.Types.ObjectId(userID) }, {
+                $set: {
+                    "note.text": noteText,
+                    "note.map": map,
+                },
+            }, { upsert: true });
+            return res.json({ success: true });
         });
     }
 }

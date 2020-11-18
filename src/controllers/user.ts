@@ -14,7 +14,10 @@ import { ReactRoad } from "../lib/util/maps";
 import recursiveSearch from "../lib/util/searchMapChange";
 import { EMap } from "../lib/types/map.type";
 import logoutFn from "../lib/util/logout";
-import getUserByMapName from '../lib/util/getUserByRoadName'
+import Note from "../entities/Note";
+import { getMongoRepository } from "typeorm";
+import Road from "../entities/Road";
+
 /**
  * /user/...
  **/
@@ -24,18 +27,17 @@ import getUserByMapName from '../lib/util/getUserByRoadName'
 function checkStartMap(user: User, map: EMap) {
   switch (map) {
     case EMap.React:
-      if (user.maps?.react) return { isTrue: true, _map: user.maps?.react };
+      if (user.maps?.REACT) return { isTrue: true, _map: user.maps?.REACT };
       break;
     case EMap.FrontEnd:
-      if (user.maps?.frontend)
-        return { isTrue: true, _map: user.maps?.frontend };
+      if (user.maps?.FRONT_END)
+        return { isTrue: true, _map: user.maps?.FRONT_END };
       break;
 
     default:
       return { isTrue: false, _map: null };
   }
 }
-
 
 class UserController {
   // POST: Dang nhap voi tai khoan local
@@ -155,21 +157,30 @@ class UserController {
     if (!map) {
       return res.status(404);
     }
-    const userID = req.session.userID;
-    // let user;
 
-    // switch (map) {
-    //   case EMap.React:
-    //     user = await User.findOne({
-    //       where: { _id: mongoose.Types.ObjectId(userID) },
-    //     });
-    //     break;
+    const user = await User.findOne(req.session.userID);
 
-    //   default:
-    //     break;
-    // }
-    const user = await getUserByMapName(map, userID)
-    user.maps = { ...user.maps, react: ReactRoad as any };
+    for (const key in user.maps) {
+      console.log(key);
+
+      if (key === map) {
+        return res.json({
+          success: false,
+          message: "Ban da bat dau lo trinh nay roi!",
+        });
+      }
+    }
+
+    switch (map) {
+      case EMap.React:
+        user.maps = { ...user.maps, REACT: ReactRoad as any };
+        break;
+      case EMap.FrontEnd:
+        user.maps = { ...user.maps, FRONT_END: {} as any };
+        break;
+      default:
+        break;
+    }
 
     await user.save();
     return res.json({
@@ -179,6 +190,7 @@ class UserController {
   }
 
   
+
   async get_map(req: Request, res: Response) {
     const userID = req.session.userID;
     const user = await User.findOne({
@@ -208,11 +220,11 @@ class UserController {
     const user = await User.findOne({ where: { _id: userObjectID } });
 
     const newMap = recursiveSearch(
-      user.maps.react,
+      user.maps.REACT,
       req.body.field,
       !req.body.currentValue
     );
-    await User.update({ _id: userObjectID }, { maps: { react: newMap } });
+    await User.update({ _id: userObjectID }, { maps: { REACT: newMap } });
 
     return res.json("update success");
   }
@@ -234,13 +246,35 @@ class UserController {
       } as IResponseServer);
     }
 
-    const newMap = recursiveSearch(_map, req.body.field, !req.body.currentValue);
-    await User.update({ _id: userObjectID }, { maps: { react: newMap } });
+    const newMap = recursiveSearch(
+      _map,
+      req.body.field,
+      !req.body.currentValue
+    );
+    await User.update({ _id: userObjectID }, { maps: { REACT: newMap } });
 
     return res.json({
       success: true,
       message: "Cap nhat thanh cong",
     } as IResponseServer);
+  }
+
+  async note_post(req: Request, res: Response) {
+    const { noteText, map } = req.body;
+    const userID = req.session.userID;
+
+    await getMongoRepository(Note).updateOne(
+      { userID: mongoose.Types.ObjectId(userID) },
+      {
+        $set: {
+          "note.text": noteText,
+          "note.map": map,
+        },
+      },
+      { upsert: true }
+    );
+
+    return res.json({ success: true });
   }
 }
 

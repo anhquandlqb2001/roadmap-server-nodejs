@@ -7,7 +7,7 @@ const user_1 = __importDefault(require("./user"));
 const roadmap_1 = __importDefault(require("./roadmap"));
 const routes = (app) => {
     app.use("/api/node/user", user_1.default);
-    app.use("/api/node/roadmap", roadmap_1.default);
+    app.use("/api/node/road", roadmap_1.default);
     // app.get('/webhook', (req, res) => {
     //   console.log('cc');
     //   // Your verify token. Should be a random string.

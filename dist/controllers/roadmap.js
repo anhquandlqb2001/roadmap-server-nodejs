@@ -60,30 +60,48 @@ class RoadMapController {
     add_comment(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { commentText, map } = req.body;
-                const road = yield Road_1.default.findOne({ where: { name: map } });
-                const userID = req.session.userID;
-                const userObjID = mongoose_1.default.Types.ObjectId(userID);
+                const roadID = req.params.id;
+                const road = yield Road_1.default.findOne({
+                    where: { _id: mongoose_1.default.Types.ObjectId(roadID) },
+                    select: ["comments"],
+                });
+                if (!road) {
+                    return res
+                        .status(404)
+                        .json({ success: false, message: "Khong ton tai lo tirnh nay" });
+                }
+                const { text } = req.body;
+                const userObjID = mongoose_1.default.Types.ObjectId(req.session.userID);
                 const newComment = new Road_1.Comment();
                 newComment.userID = userObjID;
-                newComment.text = commentText;
+                newComment.text = text;
                 road.comments = [...road.comments, newComment];
                 yield road.save();
                 return res.json({ success: true });
             }
             catch (error) {
+                console.log(error);
                 return res.json({ success: false, message: "Co loi xay ra", err: error });
             }
         });
     }
     reply_comment(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { commentReplyText, commentID } = req.body;
+            const { text } = req.body;
+            const commentID = req.params.commentID;
+            if (!text || !commentID) {
+                return res.json({ succesS: false });
+            }
             const userID = req.session.userID;
             const userObjID = mongoose_1.default.Types.ObjectId(userID);
-            const road = yield Road_1.default.findOne({
-                where: { "comments._id": mongoose_1.default.Types.ObjectId(commentID) },
+            // const road = await Road.findOne(
+            //   { "comments._id": mongoose.Types.ObjectId(commentID) } as any,
+            //   { select: ["comments.reply"] }
+            // );
+            const road = yield typeorm_1.getMongoRepository(Road_1.default).findOne({
+                "comments._id": mongoose_1.default.Types.ObjectId(commentID), select: ["comments.reply"]
             });
+            console.log("_road: ", road);
             const cmtIndex = road.comments.findIndex((comment) => comment._id.toString() === commentID);
             const oldReply = road.comments[cmtIndex].reply;
             yield typeorm_1.getMongoRepository(Road_1.default).findOneAndUpdate({
@@ -95,7 +113,7 @@ class RoadMapController {
                         {
                             _id: mongoose_1.default.Types.ObjectId(),
                             userID: userObjID,
-                            commentText: commentReplyText,
+                            text: text,
                         },
                     ],
                 },
@@ -157,6 +175,25 @@ class RoadMapController {
             road.stars = newStar;
             yield road.save();
             return res.json({ success: true });
+        });
+    }
+    get_list_road(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const roads = yield Road_1.default.find({ where: {}, select: ["_id"] });
+                if (roads.length <= 0) {
+                    return res.json({
+                        success: true,
+                        message: "Khong co lo trinh nao ton tai!",
+                    });
+                }
+                const roadIDs = roads.map((road) => road._id);
+                return res.json({ success: true, roadIDs: roadIDs });
+            }
+            catch (error) {
+                console.log(error);
+                res.json({ success: false, error: error });
+            }
         });
     }
 }
