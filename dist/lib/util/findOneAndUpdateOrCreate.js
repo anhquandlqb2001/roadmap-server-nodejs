@@ -12,19 +12,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const User_1 = __importDefault(require("../../entities/User"));
+const user_model_1 = __importDefault(require("../../models/user.model"));
 const findOneAndUpdateOrCreate = (data) => __awaiter(void 0, void 0, void 0, function* () {
     // kiem tra xem nguoi dung da ton tai chua
-    const _user = yield User_1.default.findOne({ where: { email: data.email } });
+    const _user = yield user_model_1.default.findOne({ email: data.email });
     if (!_user) {
-        const user = User_1.default.create(data);
-        return yield user.save();
+        // neu chua ton tai
+        const user = yield user_model_1.default.create(data);
+        return user;
+        // await user.save();
     }
     // cap nhat thong tin nguoi dung
-    yield User_1.default.update({ email: data.email }, {
-        extend: data.extend,
-    });
-    return yield User_1.default.findOne({ where: { email: data.email } });
+    const user = yield user_model_1.default.updateOne({ email: data.email }, { extend: data.extend });
+    return user;
+    // return await User.findOne({ where: { email: data.email } });
 });
 exports.default = findOneAndUpdateOrCreate;
 //# sourceMappingURL=findOneAndUpdateOrCreate.js.map

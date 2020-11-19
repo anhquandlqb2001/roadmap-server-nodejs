@@ -1,4 +1,4 @@
-import { IResponseServer } from "../../controllers/user";
+import { IFormDataToClientFail } from "form.type";
 
 export const formValidate = (email: string, password: string) => {
   if (!email && !password) {
@@ -8,42 +8,42 @@ export const formValidate = (email: string, password: string) => {
         { name: "email", error: "Email khong duoc de trong" },
         { name: "password", error: "Password khong duoc de trong" },
       ],
-    } as IResponseServer;
+    } as IFormDataToClientFail;
   }
 
   if (!password) {
     return {
       success: false,
       errors: [{ name: "password", error: "Password khong duoc de trong" }],
-    } as IResponseServer;
+    } as IFormDataToClientFail;
   }
 
   if (password.length <= 3) {
     return {
       success: false,
       errors: [{ name: "password", error: "Password phai dai hon 3 ki tu" }],
-    } as IResponseServer;
+    } as IFormDataToClientFail;
   }
 
   if (!email) {
     return {
       success: false,
       errors: [{ name: "email", error: "Email khong duoc de trong" }],
-    } as IResponseServer;
+    } as IFormDataToClientFail;
   }
 
   if (!email.includes("@")) {
     return {
       success: false,
       errors: [{ name: "email", error: "Vui long nhap dung email" }],
-    } as IResponseServer;
+    } as IFormDataToClientFail;
   }
 
   if (email.slice(0, email.indexOf('@')).length <= 3) {
     return {
       success: false,
       errors: [{ name: "email", error: "Ten email phai dai hon 3 ki tu" }],
-    } as IResponseServer;
+    } as IFormDataToClientFail;
   }
 
   return null;

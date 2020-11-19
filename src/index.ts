@@ -2,7 +2,7 @@ import "reflect-metadata";
 import express from "express";
 import Routes from "./routers";
 import appConfig from "./lib/config/app.config";
-import { createConnection } from "typeorm";
+import mongoose from 'mongoose'
 
 // const app = express();
 // const PORT = process.env.PORT || 5000
@@ -47,18 +47,18 @@ import { createConnection } from "typeorm";
 // app.listen(PORT, () => console.log(`server on localhost:${PORT}`));
 
 const main = async () => {
-  await createConnection({
-    type: "mongodb",
-    host: "localhost",
-    database: "roadmap",
-    synchronize: true,
-    logging: true,
+  mongoose.connect(process.env.DATABASE_URI_DEV, {
+    useNewUrlParser: true,
     useUnifiedTopology: true,
-    entities: ["dist/entities/**/*.js"],
-    migrations: ["dist/migration/**/*.js"],
-  })
-    .then(() => console.log("Connected db"))
-    .catch((err) => console.log("db err: ", err));
+    useFindAndModify: false,
+    useCreateIndex: true,
+  });
+  
+  const db = mongoose.connection
+  
+  db.on("error", () => console.log("error"))
+  
+  db.once("open", () => console.log("connected to database"))
 
   const app = express();
   const PORT = process.env.PORT || 5000;

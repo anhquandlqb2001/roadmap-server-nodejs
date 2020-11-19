@@ -16,7 +16,7 @@ require("reflect-metadata");
 const express_1 = __importDefault(require("express"));
 const routers_1 = __importDefault(require("./routers"));
 const app_config_1 = __importDefault(require("./lib/config/app.config"));
-const typeorm_1 = require("typeorm");
+const mongoose_1 = __importDefault(require("mongoose"));
 // const app = express();
 // const PORT = process.env.PORT || 5000
 // mongoose.connect(process.env.DATABASE_URI, {
@@ -48,18 +48,15 @@ const typeorm_1 = require("typeorm");
 // console.log("Test");
 // app.listen(PORT, () => console.log(`server on localhost:${PORT}`));
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
-    yield typeorm_1.createConnection({
-        type: "mongodb",
-        host: "localhost",
-        database: "roadmap",
-        synchronize: true,
-        logging: true,
+    mongoose_1.default.connect(process.env.DATABASE_URI_DEV, {
+        useNewUrlParser: true,
         useUnifiedTopology: true,
-        entities: ["dist/entities/**/*.js"],
-        migrations: ["dist/migration/**/*.js"],
-    })
-        .then(() => console.log("Connected db"))
-        .catch((err) => console.log("db err: ", err));
+        useFindAndModify: false,
+        useCreateIndex: true,
+    });
+    const db = mongoose_1.default.connection;
+    db.on("error", () => console.log("error"));
+    db.once("open", () => console.log("connected to database"));
     const app = express_1.default();
     const PORT = process.env.PORT || 5000;
     app_config_1.default(app);
