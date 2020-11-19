@@ -1,6 +1,6 @@
 import { IComment, ObjectID } from "./comment.type";
 import { TRoadName } from "./road.type";
-import { Document, Types } from "mongoose";
+import { Document, Model, Types } from "mongoose";
 import { TProvider } from "./form.type";
 
 // response data to server
@@ -27,10 +27,6 @@ export interface INote extends Document {
   updatedAt: Date
 }
 
-// method user model
-interface IUserMethod {
-  verifyPassword(plain: string): Promise<Boolean>;
-}
 
 //
 export interface IUserExtends {
@@ -57,11 +53,15 @@ export interface ISubMap extends Types.Embedded {
 }
 
 // kieu du lieu nguoi dung
-export interface IUser extends Document, IUserMethod {
+export interface IUserDocument extends Document {
   email: string;
   provider: TProvider;
   jwt?: string;
   password: string;
   extend: IUserExtends;
   maps: Types.DocumentArray<ISubMap>;
+}
+
+export interface IUserModel extends IUserDocument {
+  verifyPassword(plain: string): Promise<Boolean>;
 }

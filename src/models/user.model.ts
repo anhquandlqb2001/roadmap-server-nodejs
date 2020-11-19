@@ -1,4 +1,4 @@
-import { ISubMap, IUser } from "index.type";
+import { ISubMap, IUserDocument, IUserModel } from "index.type";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { SALT_ROUNDS } from "../lib/util/constants";
@@ -15,7 +15,7 @@ const roadSchema = new Schema<ISubMap>(
   { timestamps: true }
 );
 
-const userSchema = new Schema<IUser>(
+const userSchema: mongoose.Schema = new Schema(
   {
     password: {
       type: String,
@@ -66,12 +66,11 @@ userSchema.methods.verifyPassword = async function (plainPwd: string) {
   }
 };
 
-userSchema.pre("save", async function (next) {
+userSchema.pre<IUserDocument>("save", async function (next) {
   const user = this;
   if (!user.isModified("password")) return next();
   this.password = await bcrypt.hash(user.password, SALT_ROUNDS);
-  console.log("pwd: ", this.password);
   return next();
 });
 
-export default mongoose.model<IUser>("User", userSchema);
+export default mongoose.model<IUserModel>("User", userSchema);
