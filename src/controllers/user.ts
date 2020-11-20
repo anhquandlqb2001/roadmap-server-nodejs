@@ -7,13 +7,12 @@ import {
   IFormDataToClientFail,
   IFormDataToClientSuccess,
   EProvider,
-} from "../types/form.type";
+} from "../lib/types/form.type";
 
-import { IDataCurrentUserToClient } from "../types/user.type";
+import { IDataCurrentUserToClient } from "../lib/types/user.type";
 /**
  * /user/...
  **/
-
 
 class UserController {
   // POST: Dang nhap voi tai khoan local
@@ -80,6 +79,9 @@ class UserController {
       picture: user.extend?.picture,
     };
 
+    const ownerMapIDs = user.maps.map((map) => map._id);
+    const mapHasStarted = user.maps.map((map) => map.mapID);
+
     return res.json({
       success: true,
       user: {
@@ -87,6 +89,10 @@ class UserController {
         extend: extend,
         jwt: "aloalo123",
         provider: user.provider,
+      },
+      map: {
+        ownerMapID: ownerMapIDs,
+        mapHasStarted,
       },
     } as IDataCurrentUserToClient);
   }
@@ -126,7 +132,6 @@ class UserController {
   logout(req: Request, res: Response) {
     return logoutFn(req, res);
   }
-
 }
 
 export default new UserController();

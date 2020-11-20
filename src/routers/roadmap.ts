@@ -6,8 +6,9 @@ const router = express.Router()
 
 // router.post("/add_map", RoadMapController.add_road)
 
-// them binh luan
-router.put("/:id/comment", isAuth, RoadMapController.add_comment)
+
+// ghji chu
+router.post("/:id/:ownerMapID/note", RoadMapController.note_post)
 
 // tra loi binh luan
 router.put("/:id/comment/:commentID/reply", isAuth, RoadMapController.reply_comment)
@@ -15,23 +16,26 @@ router.put("/:id/comment/:commentID/reply", isAuth, RoadMapController.reply_comm
 // vote binh luan
 router.put("/:id/comment/:commentID/vote", isAuth, RoadMapController.vote_comment)
 
+// them binh luan
+router.put("/:id/comment", isAuth, RoadMapController.add_comment)
+
 // binh chon road
 router.put("/:id/star", isAuth, RoadMapController.star_map)
 
-// lay du lieu road
+// lay thong tin road
+router.get("/:id/info", RoadMapController.get_map)
+
+// lay danh sach road
 router.get("/list", RoadMapController.get_list_road)
 
 // bat dau road moi
 router.put("/:id/start", isAuth, RoadMapController.start_map)
 
 //
-router.get("/:id", isAuth, RoadMapController.get_map)
 
 // cap nhat lo trinh
-router.put("/:id/:idMap", RoadMapController.change_field_map)
+router.put("/:id/:ownerMapID", RoadMapController.change_field_map)
 
-// ghji chu
-router.post("/:id/:ownerMapID/note", RoadMapController.note_post)
 
 router.get("/:id/:ownerMapID", RoadMapController.get_note)
 

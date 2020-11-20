@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 import Road from "../models/road.model";
-import { TVote } from "comment.type";
+import { TVote } from "../lib/types/comment.type";
 import { ReactRoad } from "../lib/util/maps";
 import User from "../models/user.model";
 import recursiveSearch from "../lib/util/searchMapChange";
@@ -150,7 +150,7 @@ class RoadMapController {
 
   async get_list_road(req: Request, res: Response) {
     try {
-      const roads = await Road.find({}).select("_id");
+      const roads = await Road.find({}).select(["_id", "name"]);
       if (roads.length <= 0) {
         return res.json({
           success: true,
@@ -158,7 +158,7 @@ class RoadMapController {
         });
       }
 
-      return res.json({ success: true, roadIDs: roads.map((r) => r._id) });
+      return res.json({ success: true, roads });
     } catch (error) {
       console.log(error);
       res.json({ success: false, error: error });
@@ -199,30 +199,32 @@ class RoadMapController {
   //
   async get_map(req: Request, res: Response) {
     const userID = req.session.userID;
-
     const mapID = req.params.id;
     if (!mapID) {
       return res.status(404).json({ success: false });
     }
-    const user = await User.findById(userID);
-    console.log(user.maps);
+
+    const user = await User.findOne({ _id: userID, "maps.mapID": mapID });
+
+    if (typeof userID === "undefined" || !user) {
+      const road = await Road.findOne({ _id: mapID }).select(["map"]);
+      return res.json({
+        success: true,
+        data: {
+          map: JSON.parse(road.map),
+        },
+      });
+    }
 
     const mapIndex = user.maps.findIndex(
       (map) => map.mapID.toString() === mapID
     );
 
-    if (mapIndex === -1) {
-      return res.json({
-        success: false,
-        message: "Ban chua dang ky lo trinh nay",
-      });
-    }
-
     return res.json({
       success: true,
       data: {
-        map: user.maps[mapIndex].map,
-        _idMap: user.maps[mapIndex]._id,
+        map: JSON.parse(user.maps[mapIndex].map),
+        ownerMapID: user.maps[mapIndex]._id,
       },
     });
   }
@@ -232,13 +234,20 @@ class RoadMapController {
       const userID = req.session.userID;
 
       const mapID = req.params.id;
-      const _idMap = req.params.idMap;
+      const ownerMapID = req.params.ownerMapID;
+
+      if (ownerMapID === "null") {
+        return res.json({
+          success: false,
+          message: "Ban phai bat dau lo trinh nay",
+        });
+      }
 
       if (!mapID) {
         return res.status(404).json({ success: false });
       }
 
-      const user = await User.findOne({ _id: userID, "maps._id": _idMap });
+      const user = await User.findOne({ _id: userID, "maps._id": ownerMapID });
       if (!user)
         return res
           .status(404)
@@ -247,12 +256,12 @@ class RoadMapController {
       const { field, currentValue } = req.body;
 
       const newMap = recursiveSearch(
-        JSON.parse(user.maps.id(_idMap).map),
+        JSON.parse(user.maps.id(ownerMapID).map),
         field,
         !currentValue
       );
 
-      user.maps.id(_idMap).map = JSON.stringify(newMap);
+      user.maps.id(ownerMapID).map = JSON.stringify(newMap);
       await user.save();
 
       return res.json({

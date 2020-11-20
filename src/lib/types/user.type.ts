@@ -1,5 +1,5 @@
-import { EProvider } from "form.type";
-import { IDataToClient, IUserExtends } from "index.type";
+import { EProvider } from "./form.type";
+import { IDataToClient, IUserExtends } from "./index.type";
 
 export interface IDataCurrentUserToClient extends IDataToClient {
   user: {
@@ -8,5 +8,6 @@ export interface IDataCurrentUserToClient extends IDataToClient {
     jwt?: string,
     provider: EProvider,
   },
+  map: any
 }
 

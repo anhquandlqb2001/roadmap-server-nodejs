@@ -15,6 +15,7 @@ export interface IRoad extends Document {
   name: TRoadName;
   comments: Types.DocumentArray<IComment>;
   stars: ObjectID[];
+  map: any
 }
 
 // kieu du lieu ghi chu luu trong db

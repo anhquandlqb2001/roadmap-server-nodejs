@@ -1,4 +1,4 @@
-import { INote } from "index.type";
+import { INote } from "../lib/types/index.type";
 import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;

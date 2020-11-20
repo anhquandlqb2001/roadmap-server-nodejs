@@ -1,6 +1,6 @@
-import { IRoad } from "index.type";
+import { IRoad } from "../lib/types/index.type";
 import mongoose from "mongoose";
-import { IComment, ICommentBase, IVote } from "../types/comment.type";
+import { IComment, ICommentBase, IVote } from "../lib/types/comment.type";
 
 const Schema = mongoose.Schema;
 
@@ -57,6 +57,9 @@ const roadSchema = new Schema(
     stars: {
       type: [Schema.Types.ObjectId],
     },
+    map: {
+      type: String
+    }
   },
   {
     collection: "roads",

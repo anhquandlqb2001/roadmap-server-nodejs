@@ -1,4 +1,4 @@
-import { IFormDataToClientFail } from "form.type";
+import { IFormDataToClientFail } from "../types/form.type";
 
 export const formValidate = (email: string, password: string) => {
   if (!email && !password) {

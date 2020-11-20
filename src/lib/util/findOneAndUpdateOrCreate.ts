@@ -1,5 +1,5 @@
 // import User from "../../entities/User";
-import { IUserDocument } from "index.type";
+import { IUserDocument } from "../types/index.type";
 import User from "../../models/user.model";
 
 const findOneAndUpdateOrCreate = async (data: IUserDocument) => {

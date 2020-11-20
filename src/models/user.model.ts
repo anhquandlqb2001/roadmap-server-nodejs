@@ -1,4 +1,4 @@
-import { ISubMap, IUserDocument, IUserModel } from "index.type";
+import { ISubMap, IUserDocument, IUserModel } from "../lib/types/index.type";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { SALT_ROUNDS } from "../lib/util/constants";
