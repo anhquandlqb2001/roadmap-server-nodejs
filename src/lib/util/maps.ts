@@ -2,21 +2,51 @@ export const ReactRoad = [
   {
     "fundamental-topics": [
       {
-        "create-react-app": false,
-        jsx: false,
-        components: {
-          "functional-components": false,
-          "class-components": false,
+        "create-react-app": {
+          value: false,
+          resources: {},
         },
-        "props-vs-state": false,
-        "conditional-rendering": false,
+        jsx: {
+          value: false,
+          resources: {},
+        },
+        components: {
+          "functional-components": {
+            value: false,
+            resources: {},
+          },
+          "class-components": {
+            value: false,
+            resources: {},
+          },
+        },
+        "props-vs-state": {
+          value: false,
+          resources: {},
+        },
+        "conditional-rendering": {
+          value: false,
+          resources: {},
+        },
       },
       {
-        "component-life-cycle": false,
-        "lists-and-keys": false,
-        "composition-and-inheritance": false,
+        "component-life-cycle": {
+          value: false,
+          resources: {},
+        },
+        "lists-and-keys": {
+          value: false,
+          resources: {},
+        },
+        "composition-and-inheritance": {
+          value: false,
+          resources: {},
+        },
         "basic-hook": {
-          usestate: false,
+          usestate: {
+            value: false,
+            resources: {},
+          },
           useeffect: false,
         },
       },
@@ -26,25 +56,67 @@ export const ReactRoad = [
     "advanced-topics": [
       {
         hooks: {
-          "writing-your-own-hooks": false,
+          "writing-your-own-hooks": {
+            value: false,
+            resources: {},
+          },
           "common-hooks": {
-            usecallback: false,
-            useref: false,
-            usememo: false,
-            usereducer: false,
-            usecontext: false,
+            usecallback: {
+              value: false,
+              resources: {},
+            },
+            useref: {
+              value: false,
+              resources: {},
+            },
+            usememo: {
+              value: false,
+              resources: {},
+            },
+            usereducer: {
+              value: false,
+              resources: {},
+            },
+            usecontext: {
+              value: false,
+              resources: {},
+            },
           },
         },
-        context: false,
-        refs: false,
-        "render-props": false,
-        "code-splitting": false,
+        context: {
+          value: false,
+          resources: {},
+        },
+        refs: {
+          value: false,
+          resources: {},
+        },
+        "render-props": {
+          value: false,
+          resources: {},
+        },
+        "code-splitting": {
+          value: false,
+          resources: {},
+        },
       },
       {
-        "high-order-components": false,
-        portals: false,
-        "error-boundaries": false,
-        "fiber-architecture": false,
+        "high-order-components": {
+          value: false,
+          resources: {},
+        },
+        portals: {
+          value: false,
+          resources: {},
+        },
+        "error-boundaries": {
+          value: false,
+          resources: {},
+        },
+        "fiber-architecture": {
+          value: false,
+          resources: {},
+        },
       },
     ],
   },
@@ -52,62 +124,193 @@ export const ReactRoad = [
     ecosystem: [
       {
         routers: {
-          "react-router": false,
-          "reach-router": false,
+          "react-router": {
+            value: false,
+            resources: {},
+          },
+          "reach-router": {
+            value: false,
+            resources: {},
+          },
         },
       },
       {
         ssr: {
-          nextjs: false,
+          nextjs: {
+            value: false,
+            resources: {},
+          },
         },
       },
       {
         ssg: {
-          nextjs: false,
-          gatsby: false,
+          nextjs: {
+            value: false,
+            resources: {},
+          },
+          gatsby: {
+            value: false,
+            resources: {},
+          },
         },
       },
       {
         "api-calls": {
-          axios: false,
-          unfetch: false,
-          superagent: false,
-          "use-http": false,
+          axios: {
+            value: false,
+            resources: {},
+          },
+          unfetch: {
+            value: false,
+            resources: {},
+          },
+          superagent: {
+            value: false,
+            resources: {},
+          },
+          "use-http": {
+            value: false,
+            resources: {},
+          },
         },
       },
       {
         mobile: {
-          "react-native": false,
+          "react-native": {
+            value: false,
+            resources: {},
+          },
         },
       },
       {
         form: {
-          "react-hook-form": false,
-          formik: false,
-          "final-form": false,
+          "react-hook-form": {
+            value: false,
+            resources: {},
+          },
+          formik: {
+            value: false,
+            resources: {},
+          },
+          "final-form": {
+            value: false,
+            resources: {},
+          },
         },
       },
       {
         testing: {
-          jest: false,
-          "react-testing-library": false,
-          cypress: false,
+          jest: {
+            value: false,
+            resources: {},
+          },
+          "react-testing-library": {
+            value: false,
+            resources: {},
+          },
+          cypress: {
+            value: false,
+            resources: {},
+          },
         },
       },
       {
         "state-management": {
-          "context/state": false,
-          redux: false,
-          mobx: false,
+          "context/state": {
+            value: false,
+            resources: {},
+          },
+          redux: {
+            value: false,
+            resources: {},
+          },
+          mobx: {
+            value: false,
+            resources: {},
+          },
         },
       },
       {
         styling: {
-          charkaui: false,
-          materialui: false,
-          "ant-design": false,
-          "styled-components": false,
-          emotion: false,
+          charkaui: {
+            value: false,
+            resources: {},
+          },
+          materialui: {
+            value: false,
+            resources: {},
+          },
+          "ant-design": {
+            value: false,
+            resources: {},
+          },
+          "styled-components": {
+            value: false,
+            resources: {},
+          },
+          emotion: {
+            value: false,
+            resources: {},
+          },
+        },
+      },
+    ],
+  },
+];
+
+export const fakeMap = [
+  {
+    "fundamental-topics": [
+      {
+        "create-react-app": {
+          value: true,
+          resources: {},
+        },
+        jsx: {
+          value: false,
+          resources: {},
+        },
+        components: {
+          "functional-components": {
+            value: false,
+            resources: {},
+          },
+          "class-components": {
+            value: false,
+            resources: {},
+          },
+        },
+        "props-vs-state": {
+          value: false,
+          resources: {},
+        },
+        "conditional-rendering": {
+          value: false,
+          resources: {},
+        },
+      },
+      {
+        "component-life-cycle": {
+          value: false,
+          resources: {},
+        },
+        "lists-and-keys": {
+          value: false,
+          resources: {},
+        },
+        "composition-and-inheritance": {
+          value: false,
+          resources: {},
+        },
+        "basic-hook": {
+          usestate: {
+            value: false,
+            resources: {},
+          },
+          useeffect: {
+            value: false,
+            resources: {},
+          },
         },
       },
     ],

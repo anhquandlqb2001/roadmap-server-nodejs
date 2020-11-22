@@ -4,7 +4,7 @@ import RoadMapController from '../controllers/roadmap'
 
 const router = express.Router()
 
-// router.post("/add_map", RoadMapController.add_road)
+router.post("/add_map", RoadMapController.add_road)
 
 
 // ghji chu

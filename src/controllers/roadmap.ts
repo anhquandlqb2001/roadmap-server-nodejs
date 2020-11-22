@@ -2,28 +2,35 @@ import { Request, Response } from "express";
 import mongoose from "mongoose";
 import Road from "../models/road.model";
 import { TVote } from "../lib/types/comment.type";
-import { ReactRoad } from "../lib/util/maps";
+import { fakeMap, ReactRoad } from "../lib/util/maps";
 import User from "../models/user.model";
 import recursiveSearch from "../lib/util/searchMapChange";
 import Note from "../models/note.model";
 
 class RoadMapController {
-  // async add_road(req: Request, res: Response) {
-  //   const map = req.body.map;
-  //   if (!map) {
-  //     return res.status(404);
-  //   }
-  //   // kiem tra lo trinh da ton tai chua
-  //   const road = await Road.findOne({ where: { name: map } });
-  //   if (road) {
-  //     return res.json({ success: false, message: "Lo trinh da ton tai" });
-  //   }
-  //   // tao lo trinh moi
-  //   const _road = new Road();
-  //   _road.name = map;
-  //   await _road.save();
-  //   res.json({ success: true });
-  // }
+  async add_road(req: Request, res: Response) {
+    // const map = req.body.map;
+    // if (!map) {
+    //   return res.status(404);
+    // }
+    // // kiem tra lo trinh da ton tai chua
+    // const road = await Road.findOne({ where: { name: map } });
+    // if (road) {
+    //   return res.json({ success: false, message: "Lo trinh da ton tai" });
+    // }
+    // // tao lo trinh moi
+    // const _road = new Road();
+    // _road.name = map;
+    // await _road.save();
+
+    const road = new Road();
+    road._id = mongoose.Types.ObjectId("5fb12e6e581d3b79b1362e13");
+    road.name = "REACT";
+    road.map = JSON.stringify(ReactRoad);
+    await road.save();
+
+    res.json({ success: true });
+  }
 
   async get_comments_by_page(req: Request, res: Response) {}
 
@@ -232,7 +239,6 @@ class RoadMapController {
   async change_field_map(req: Request, res: Response) {
     try {
       const userID = req.session.userID;
-
       const mapID = req.params.id;
       const ownerMapID = req.params.ownerMapID;
 
@@ -255,6 +261,8 @@ class RoadMapController {
 
       const { field, currentValue } = req.body;
 
+      console.log(currentValue);
+      
       const newMap = recursiveSearch(
         JSON.parse(user.maps.id(ownerMapID).map),
         field,
