@@ -36,7 +36,7 @@ router.put("/:id/start", isAuth, RoadMapController.start_map)
 // cap nhat lo trinh
 router.put("/:id/:ownerMapID", RoadMapController.change_field_map)
 
-
+// lay ghi chu
 router.get("/:id/:ownerMapID", RoadMapController.get_note)
 
 
