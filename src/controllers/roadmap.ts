@@ -179,7 +179,7 @@ class RoadMapController {
         return res.status(404);
       }
       const user = await User.findById(req.session.userID);
-
+      
       if (user.maps.findIndex((map) => map.mapID.toString() === mapID) !== -1) {
         return res.json({
           success: false,
