@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import mongoose from "mongoose";
 import Road from "../models/road.model";
 import { TVote } from "../lib/types/comment.type";
-import { fakeMap, ReactRoad } from "../lib/util/maps";
+import { ReactRoad } from "../lib/util/maps";
 import User from "../models/user.model";
 import recursiveSearch from "../lib/util/searchMapChange";
 import Note from "../models/note.model";
@@ -260,8 +260,6 @@ class RoadMapController {
           .json({ success: false, message: "Nguoi dung khong ton tai" });
 
       const { field, currentValue } = req.body;
-
-      console.log(currentValue);
       
       const newMap = recursiveSearch(
         JSON.parse(user.maps.id(ownerMapID).map),

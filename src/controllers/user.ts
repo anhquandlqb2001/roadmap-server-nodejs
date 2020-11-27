@@ -79,8 +79,9 @@ class UserController {
       picture: user.extend?.picture,
     };
 
-    const ownerMapIDs = user.maps.map((map) => map._id);
-    const mapHasStarted = user.maps.map((map) => map.mapID);
+    const mapArr = user.maps.map((map) => {
+      return { mapHasStarted: map.mapID, ownerMapID: map._id };
+    });
 
     return res.json({
       success: true,
@@ -90,10 +91,7 @@ class UserController {
         jwt: "aloalo123",
         provider: user.provider,
       },
-      map: {
-        ownerMapID: ownerMapIDs,
-        mapHasStarted,
-      },
+      map: mapArr
     } as IDataCurrentUserToClient);
   }
 
