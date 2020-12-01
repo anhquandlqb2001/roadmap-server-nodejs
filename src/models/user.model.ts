@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 
 const roadSchema = new Schema<ISubMap>(
   {
-    mapID: { type: Schema.Types.ObjectId, required: true },
+    mapId: { type: Schema.Types.ObjectId, required: true },
     map: {
       type: Schema.Types.Mixed
     },

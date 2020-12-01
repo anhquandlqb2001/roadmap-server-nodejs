@@ -20,9 +20,9 @@ export interface IRoad extends Document {
 
 // kieu du lieu ghi chu luu trong db
 export interface INote extends Document {
-  mapID: ObjectID;
-  ownerMapID: ObjectID
-  userID: ObjectID
+  mapId: ObjectID;
+  ownerMapId: ObjectID
+  userId: ObjectID
   text: string;
   createdAt: Date
   updatedAt: Date
@@ -49,7 +49,7 @@ interface IMap {
 
 // 
 export interface ISubMap extends Types.Embedded {
-  mapID: ObjectID
+  mapId: ObjectID
   map: any
 }
 

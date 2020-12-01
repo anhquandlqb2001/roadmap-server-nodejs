@@ -6,9 +6,9 @@ const Schema = mongoose.Schema;
 const noteSchema = new Schema<INote>(
   {
     // id cua map
-    mapID: { type: Schema.Types.ObjectId },
-    ownerMapID: { type: Schema.Types.ObjectId },
-    userID: { type: Schema.Types.ObjectId },
+    mapId: { type: Schema.Types.ObjectId },
+    ownerMapId: { type: Schema.Types.ObjectId },
+    userId: { type: Schema.Types.ObjectId },
     text: { type: String },
   },
   {

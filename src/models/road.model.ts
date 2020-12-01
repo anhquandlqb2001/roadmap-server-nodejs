@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 
 const replySchema = new Schema<ICommentBase>(
   {
-    userID: {
+    userId: {
       type: Schema.Types.ObjectId,
       required: true,
     },
@@ -19,7 +19,7 @@ const replySchema = new Schema<ICommentBase>(
 
 const voteSchema = new Schema<IVote>(
   {
-    userID: {
+    userId: {
       type: Schema.Types.ObjectId,
     },
     type: String,
@@ -29,14 +29,14 @@ const voteSchema = new Schema<IVote>(
 
 const commentSchema = new Schema<IComment>(
   {
-    userID: {
+    userId: {
       type: Schema.Types.ObjectId,
     },
     text: { type: String },
-    reply: {
+    replys: {
       type: [replySchema],
     },
-    vote: {
+    votes: {
       type: [voteSchema],
     },
   },

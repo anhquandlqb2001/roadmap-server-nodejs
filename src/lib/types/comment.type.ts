@@ -6,19 +6,19 @@ export type ObjectID = Types.ObjectId;
 export type TVote = "UPVOTE" | "DOWNVOTE";
 
 export interface ICommentBase extends Types.Embedded {
-  userID: ObjectID;
+  userId: ObjectID;
   text: string;
 }
 
 export interface IVote extends Types.Embedded {
-  userID: ObjectID;
+  userId: ObjectID;
   type: TVote;
 }
 
 // kieu du lieu binh luan luu trong db
 export interface IComment extends ICommentBase {
-  vote?: Types.DocumentArray<IVote>;
-  reply?: Types.DocumentArray<ICommentBase>;
+  votes?: Types.DocumentArray<IVote>;
+  replys?: Types.DocumentArray<ICommentBase>;
 }
 
 // du lieu gui ve server - du lieu binh luan
@@ -29,5 +29,5 @@ interface ICommentDataToServer {
 
 // du lieu gui ve server - du lieu tra loi binh luan
 interface ICommentReplyDataToServer extends ICommentDataToServer {
-  commentID: ObjectID;
+  commentId: ObjectID;
 }

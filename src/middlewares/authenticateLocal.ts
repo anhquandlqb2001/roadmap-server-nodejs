@@ -13,14 +13,13 @@ const authenticateLocal = (
   ) {
     if (err) return next(err);
     if (info) {
-      // console.log(info);
       req.info = info;
       return next();
     }
 
     if (!user) return res.redirect("/login");
     // return next()
-    req.session.userID = user._id;
+    req.session.userId = user._id;
     console.log("session: ", req.session);
     console.log("user: ", req.user);
     
