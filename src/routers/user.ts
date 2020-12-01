@@ -1,20 +1,20 @@
 import express from "express";
-import UserController from "../controllers/user";
+import {loginFacebook, loginLocal, logout, current, register} from "../controllers/user";
 
 const router = express.Router();
 
 // router.post("/note", isAuth, UserController.note_post)
 
 
-router.post("/login_local", UserController.login_local);
+router.post("/login_local", loginLocal);
 
-router.post("/login_facebook", UserController.login_facebook)
+router.post("/login_facebook", loginFacebook)
 
-router.post("/register", UserController.register);
+router.post("/register", register);
 
-router.get("/current", UserController.current);
+router.get("/current", current);
 
-router.post("/logout", UserController.logout)
+router.post("/logout", logout)
 
 
 
