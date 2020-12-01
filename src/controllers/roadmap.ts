@@ -36,20 +36,20 @@ class RoadMapController {
 
   async add_comment(req: Request, res: Response) {
     try {
-      const roadID = req.params.id;
-      const road = await Road.findById(roadID);
+      const mapId = req.params.mapId;
+      const map = await Road.findById(mapId);
 
-      if (!road) {
+      if (!map) {
         return res
           .status(404)
           .json({ success: false, message: "Khong ton tai lo tirnh nay" });
       }
 
       const { text } = req.body;
-      const userObjID = mongoose.Types.ObjectId(req.session.userId);
+      const userObjId = mongoose.Types.ObjectId(req.session.userId);
 
-      road.comments.push({ userID: userObjID, text: text });
-      await road.save();
+      map.comments.push({ userID: userObjId, text: text });
+      await map.save();
 
       return res.json({ success: true });
     } catch (error) {
@@ -61,23 +61,23 @@ class RoadMapController {
   async reply_comment(req: Request, res: Response) {
     const { text } = req.body;
 
-    const commentID = req.params.commentID;
-    const mapID = req.params.id;
+    const commentId = req.params.commentId;
+    const mapId = req.params.mapId;
 
-    if (!text || !commentID) {
+    if (!text || !commentId) {
       return res.json({ succesS: false });
     }
 
-    const userID = req.session.userId;
-    const road = await Road.findById(mapID);
-    const currentReplys = road.comments.id(commentID).replys;
+    const userId = req.session.userId;
+    const road = await Road.findById(mapId);
+    const currentReplys = road.comments.id(commentId).replys;
 
-    road.comments.id(commentID).replys = [
+    road.comments.id(commentId).replys = [
       ...currentReplys,
-      { userID, text },
+      { userId, text },
     ] as any;
 
-    road.comments.id(commentID).replys;
+    road.comments.id(commentId).replys;
 
     await road.save();
 
@@ -90,33 +90,33 @@ class RoadMapController {
       if (!type) {
         return res.json({ succesS: false });
       }
-      const mapID = req.params.id;
-      const commentID = req.params.commentID;
-      const userID = req.session.userId;
-      const road = await Road.findById(mapID);
+      const mapId = req.params.mapId;
+      const commentId = req.params.commentId;
+      const userId = req.session.userId;
+      const road = await Road.findById(mapId);
 
-      const currentVotes = road.comments.id(commentID).votes;
+      const currentVotes = road.comments.id(commentId).votes;
       const voteIndex = currentVotes.findIndex(
-        (v) => v.userId.toString() === userID
+        (v) => v.userId.toString() === userId
       );
 
       if (voteIndex !== -1) {
         // neu nguoi dung da vote
         if (type !== currentVotes[voteIndex].type) {
           // vote cua nguoi dung khac voi vote truoc do
-          road.comments.id(commentID).votes = currentVotes.map((v) =>
-            v.userId.toString() === userID
-              ? { userID: v.userId, type: type }
+          road.comments.id(commentId).votes = currentVotes.map((v) =>
+            v.userId.toString() === userId
+              ? { userId: v.userId, type: type }
               : v
           ) as any;
           // } else { otherwise
-          road.comments.id(commentID).votes = road.comments
-            .id(commentID)
-            .votes.filter((v) => v.userId.toString() !== userID) as any;
+          road.comments.id(commentId).votes = road.comments
+            .id(commentId)
+            .votes.filter((v) => v.userId.toString() !== userId) as any;
         }
       } else {
         // nguoi dung chua vote
-        road.comments.id(commentID).votes.push({ userID, type });
+        road.comments.id(commentId).votes.push({ userId, type });
       }
 
       await road.save();
@@ -129,19 +129,19 @@ class RoadMapController {
 
   async star_map(req: Request, res: Response) {
     try {
-      const mapID = req.params.id;
-      const road = await Road.findById(mapID);
+      const mapId = req.params.mapId;
+      const road = await Road.findById(mapId);
       if (!road)
         return res
           .status(404)
           .json({ success: false, message: "Khong ton tai lo trinh nay!" });
 
-      const userID = req.session.userId;
+      const userId = req.session.userId;
 
-      if (road.stars.findIndex((star) => star.toString() === userID) === -1) {
-        road.stars.push(userID);
+      if (road.stars.findIndex((star) => star.toString() === userId) === -1) {
+        road.stars.push(userId);
       } else {
-        road.stars = road.stars.filter((star) => star.toString() !== userID);
+        road.stars = road.stars.filter((star) => star.toString() !== userId);
       }
 
       await road.save();
@@ -173,7 +173,7 @@ class RoadMapController {
 
   async start_map(req: Request, res: Response) {
     try {
-      const mapId = req.params.id;
+      const mapId = req.params.mapId;
       if (!mapId) {
         return res.status(404);
       }
@@ -205,7 +205,7 @@ class RoadMapController {
   //
   async get_map(req: Request, res: Response) {
     const userId = req.session.userId;
-    const mapId = req.params.id;
+    const mapId = req.params.mapId;
     if (!mapId) {
       return res.status(404).json({ success: false });
     }
@@ -238,8 +238,8 @@ class RoadMapController {
   async change_field_map(req: Request, res: Response) {
     try {
       const userId = req.session.userId;
-      const mapId = req.params.id;
-      const ownerMapId = req.params.ownerMapID;
+      const mapId = req.params.mapId;
+      const ownerMapId = req.params.ownerMapId;
 
       if (ownerMapId === "null") {
         return res.json({
@@ -282,9 +282,9 @@ class RoadMapController {
   async note_post(req: Request, res: Response) {
     try {
       const { text } = req.body;
-      const mapID = req.params.id;
-      const ownerMapID = req.params.ownerMapID;
-      if (!mapID || !text) {
+      const mapId = req.params.mapId;
+      const ownerMapId = req.params.ownerMapId;
+      if (!mapId || !text) {
         return res.status(404).json({ success: false });
       }
 
@@ -292,8 +292,8 @@ class RoadMapController {
 
       const user = await User.findOne({
         _id: userID,
-        "maps._id": ownerMapID,
-        "maps.mapID": mapID,
+        "maps._id": ownerMapId,
+        "maps.mapId": mapId,
       });
       console.log("user: ", user);
 
@@ -301,13 +301,13 @@ class RoadMapController {
         return res.status(404).json({ success: false });
       }
 
-      const note = await Note.findOne({ userID, ownerMapID, mapID });
+      const note = await Note.findOne({ userID, ownerMapId, mapId });
 
       if (!note) {
         const _note = new Note();
         (_note.userId = mongoose.Types.ObjectId(userID)),
-          (_note.mapId = mongoose.Types.ObjectId(mapID));
-        _note.ownerMapId = mongoose.Types.ObjectId(ownerMapID);
+          (_note.mapId = mongoose.Types.ObjectId(mapId));
+        _note.ownerMapId = mongoose.Types.ObjectId(ownerMapId);
         _note.text = text;
         await _note.save();
       } else {
@@ -323,8 +323,8 @@ class RoadMapController {
 
   async get_note(req: Request, res: Response) {
     try {
-      const mapId = req.params.id;
-      const ownerMapId = req.params.ownerMapID;
+      const mapId = req.params.mapId;
+      const ownerMapId = req.params.ownerMapId;
 
       const note = await Note.findOne({ mapId, ownerMapId });
       if (!note) {
