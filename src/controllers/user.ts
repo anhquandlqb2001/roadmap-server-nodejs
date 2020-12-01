@@ -46,7 +46,7 @@ class UserController {
     }
 
     // dang nhap thanh cong
-    req.session.userID = user._id;
+    req.session.userId = user._id;
     return res.json({
       success: true,
       data: { email: user.email, provider: user.provider },
@@ -57,7 +57,7 @@ class UserController {
   async login_facebook(req: Request, res: Response) {
     const user = await findOneAndUpdateOrCreate(req.body);
     // dang nhap thanh cong
-    req.session.userID = user._id;
+    req.session.userId = user._id;
     return res.json({
       success: true,
       data: { email: user.email, provider: EProvider.Facebook },
@@ -66,10 +66,10 @@ class UserController {
 
   // GET: Kiem tra thong tin nguoi dung trong session neu ton tai
   async current(req: Request, res: Response) {
-    const userID = req.session.userID;
-    if (!userID) return res.json({ user: null });
+    const userId = req.session.userId;
+    if (!userId) return res.json({ user: null });
 
-    const user = await User.findById(userID);
+    const user = await User.findById(userId);
     if (!user) {
       return res.json({ user: null });
     }
@@ -80,7 +80,7 @@ class UserController {
     };
 
     const mapArr = user.maps.map((map) => {
-      return { mapHasStarted: map.mapID, ownerMapID: map._id };
+      return { mapHasStarted: map.mapId, ownerMapId: map._id };
     });
 
     return res.json({
