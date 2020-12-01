@@ -157,7 +157,8 @@ class RoadMapController {
 
   async get_list_road(req: Request, res: Response) {
     try {
-      const roads = await Road.find({}).select(["_id", "name"]);
+      const roads = await Road.find({}).select(["_id", "name", "intro"]);
+
       if (roads.length <= 0) {
         return res.json({
           success: true,
@@ -259,12 +260,12 @@ class RoadMapController {
           .status(404)
           .json({ success: false, message: "Nguoi dung khong ton tai" });
 
-      const { field, currentValue } = req.body;
+      const { field_change, current_value } = req.body;
       
       const newMap = recursiveSearch(
         JSON.parse(user.maps.id(ownerMapID).map),
-        field,
-        !currentValue
+        field_change,
+        !current_value
       );
 
       user.maps.id(ownerMapID).map = JSON.stringify(newMap);
