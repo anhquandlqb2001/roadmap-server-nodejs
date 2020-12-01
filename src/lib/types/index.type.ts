@@ -11,7 +11,7 @@ export interface IDataToClient {
 }
 
 // kieu du lieu road luu trong db
-export interface IRoad extends Document {
+export interface IMap extends Document {
   name: TRoadName;
   comments: Types.DocumentArray<IComment>;
   stars: ObjectID[];
@@ -38,13 +38,6 @@ export interface IUserExtends {
     width: number;
     url: string;
   };
-}
-
-//
-interface IMap {
-  REACT: object,
-  FRONT_END: object,
-  BACK_END: object
 }
 
 // 

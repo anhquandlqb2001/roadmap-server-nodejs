@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
-import Road from "../models/road.model";
+import Map from "../models/map.model";
 import { TVote } from "../lib/types/comment.type";
 import { ReactRoad } from "../lib/util/maps";
 import User from "../models/user.model";
@@ -9,25 +9,11 @@ import Note from "../models/note.model";
 
 class RoadMapController {
   async add_road(req: Request, res: Response) {
-    // const map = req.body.map;
-    // if (!map) {
-    //   return res.status(404);
-    // }
-    // // kiem tra lo trinh da ton tai chua
-    // const road = await Road.findOne({ where: { name: map } });
-    // if (road) {
-    //   return res.json({ success: false, message: "Lo trinh da ton tai" });
-    // }
-    // // tao lo trinh moi
-    // const _road = new Road();
-    // _road.name = map;
-    // await _road.save();
-
-    const road = new Road();
-    road._id = mongoose.Types.ObjectId("5fb12e6e581d3b79b1362e13");
-    road.name = "REACT";
-    road.map = JSON.stringify(ReactRoad);
-    await road.save();
+    const map = new Map();
+    map._id = mongoose.Types.ObjectId("5fb12e6e581d3b79b1362e13");
+    map.name = "REACT";
+    map.map = JSON.stringify(ReactRoad);
+    await map.save();
 
     res.json({ success: true });
   }
@@ -37,7 +23,7 @@ class RoadMapController {
   async add_comment(req: Request, res: Response) {
     try {
       const mapId = req.params.mapId;
-      const map = await Road.findById(mapId);
+      const map = await Map.findById(mapId);
 
       if (!map) {
         return res
@@ -69,17 +55,17 @@ class RoadMapController {
     }
 
     const userId = req.session.userId;
-    const road = await Road.findById(mapId);
-    const currentReplys = road.comments.id(commentId).replys;
+    const map = await Map.findById(mapId);
+    const currentReplys = map.comments.id(commentId).replys;
 
-    road.comments.id(commentId).replys = [
+    map.comments.id(commentId).replys = [
       ...currentReplys,
       { userId, text },
     ] as any;
 
-    road.comments.id(commentId).replys;
+    map.comments.id(commentId).replys;
 
-    await road.save();
+    await map.save();
 
     return res.json({ success: true });
   }
@@ -93,9 +79,9 @@ class RoadMapController {
       const mapId = req.params.mapId;
       const commentId = req.params.commentId;
       const userId = req.session.userId;
-      const road = await Road.findById(mapId);
+      const map = await Map.findById(mapId);
 
-      const currentVotes = road.comments.id(commentId).votes;
+      const currentVotes = map.comments.id(commentId).votes;
       const voteIndex = currentVotes.findIndex(
         (v) => v.userId.toString() === userId
       );
@@ -104,22 +90,22 @@ class RoadMapController {
         // neu nguoi dung da vote
         if (type !== currentVotes[voteIndex].type) {
           // vote cua nguoi dung khac voi vote truoc do
-          road.comments.id(commentId).votes = currentVotes.map((v) =>
+          map.comments.id(commentId).votes = currentVotes.map((v) =>
             v.userId.toString() === userId
               ? { userId: v.userId, type: type }
               : v
           ) as any;
           // } else { otherwise
-          road.comments.id(commentId).votes = road.comments
+          map.comments.id(commentId).votes = map.comments
             .id(commentId)
             .votes.filter((v) => v.userId.toString() !== userId) as any;
         }
       } else {
         // nguoi dung chua vote
-        road.comments.id(commentId).votes.push({ userId, type });
+        map.comments.id(commentId).votes.push({ userId, type });
       }
 
-      await road.save();
+      await map.save();
       return res.json({ success: true });
     } catch (error) {
       console.log(error);
@@ -130,21 +116,21 @@ class RoadMapController {
   async star_map(req: Request, res: Response) {
     try {
       const mapId = req.params.mapId;
-      const road = await Road.findById(mapId);
-      if (!road)
+      const map = await Map.findById(mapId);
+      if (!map)
         return res
           .status(404)
           .json({ success: false, message: "Khong ton tai lo trinh nay!" });
 
       const userId = req.session.userId;
 
-      if (road.stars.findIndex((star) => star.toString() === userId) === -1) {
-        road.stars.push(userId);
+      if (map.stars.findIndex((star) => star.toString() === userId) === -1) {
+        map.stars.push(userId);
       } else {
-        road.stars = road.stars.filter((star) => star.toString() !== userId);
+        map.stars = map.stars.filter((star) => star.toString() !== userId);
       }
 
-      await road.save();
+      await map.save();
 
       return res.json({ success: true });
     } catch (error) {
@@ -155,7 +141,7 @@ class RoadMapController {
 
   async get_list_road(req: Request, res: Response) {
     try {
-      const roads = await Road.find({}).select(["_id", "name", "intro"]);
+      const roads = await Map.find({}).select(["_id", "name", "intro"]);
 
       if (roads.length <= 0) {
         return res.json({
@@ -213,11 +199,11 @@ class RoadMapController {
     const user = await User.findOne({ _id: userId, "maps.mapId": mapId });
 
     if (typeof userId === "undefined" || !user) {
-      const road = await Road.findOne({ _id: mapId }).select(["map"]);
+      const map = await Map.findOne({ _id: mapId }).select(["map"]);
       return res.json({
         success: true,
         data: {
-          map: JSON.parse(road.map),
+          map: JSON.parse(map.map),
         },
       });
     }

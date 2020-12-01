@@ -1,4 +1,4 @@
-import { IRoad } from "../lib/types/index.type";
+import { IMap } from "../lib/types/index.type";
 import mongoose from "mongoose";
 import { IComment, ICommentBase, IVote } from "../lib/types/comment.type";
 
@@ -45,7 +45,7 @@ const commentSchema = new Schema<IComment>(
   }
 );
 
-const roadSchema = new Schema(
+const mapSchema = new Schema(
   {
     name: {
       type: String,
@@ -62,9 +62,9 @@ const roadSchema = new Schema(
     }
   },
   {
-    collection: "roads",
+    collection: "maps",
     timestamps: true,
   }
 );
 
-export default mongoose.model<IRoad>("Road", roadSchema);
+export default mongoose.model<IMap>("Road", mapSchema);
