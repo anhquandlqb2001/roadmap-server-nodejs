@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { formValidate } from "../lib/util/formValidate";
 import findOneAndUpdateOrCreate from "../lib/util/findOneAndUpdateOrCreate";
-import User from "../models/user.model";
+// import User from "../models/user.model";
 import logoutFn from "../lib/util/logout";
 import {
   IFormDataToClientFail,

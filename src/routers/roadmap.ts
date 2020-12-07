@@ -12,6 +12,8 @@ import {
   getMap,
   getNote,
   changeFieldMap,
+  getTest,
+  postTest
 } from "../controllers/roadmap";
 
 const router = express.Router();
@@ -47,5 +49,10 @@ router.put("/:mapId/:ownerMapId", changeFieldMap);
 
 // lay ghi chu
 router.get("/:mapId/:ownerMapId", getNote);
+
+
+router.get("/test", getTest)
+
+router.post("/test", postTest)
 
 export default router;

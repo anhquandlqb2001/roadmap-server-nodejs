@@ -1,12 +1,48 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
-import Map from "../models/map.model";
+// import Map from "../models/map.model";
 import { TVote } from "../lib/types/comment.type";
 import { ReactRoad } from "../lib/util/maps";
-import User from "../models/user.model";
+// import User from "../models/user.model";
 import recursiveSearch from "../lib/util/searchMapChange";
-import Note from "../models/note.model";
+// import Note from "../models/note.model";
 
+import UserModel from "../models/user";
+import MapModel from "../models/map";
+import CommentModel, {IReply} from "../models/comment";
+
+export const getTest = async (req, res) => {
+  console.log("hello world");
+};
+
+export const postTest = async (req, res) => {
+  // const user = new UserModel({password: "123", email: "tesasdast@gmail.com", provider: "FACEBOOK"})
+  // await user.save()
+
+  // const map = new MapModel()
+  // map.name = "Js"
+  // map.map = "asds"
+  // map.description = {mapId: map._id, detail: "asdas", title: "JAVASCRIPT"}
+  // map.documentation = {mapId: map._id, text: "Asdds"}
+  // await map.save()
+
+  // const map = await MapModel.findOne({name: "Js"})
+  // map.updateDescription("ahihi")
+
+  const comment = new CommentModel()
+  comment.mapId = "5fce6983ee1ad8d48e5b92c5"
+  comment.text = "alo alo 123"
+  comment.userId = req.session.userId
+  await comment.save()
+
+  // const comment = await CommentModel.findOne({
+  //   mapId: "5fce6983ee1ad8d48e5b92c5",
+  //   _id: "5fce7049de94c0df670125b8",
+  // });
+  // comment.replys.push({commentId: comment._id, mapId: comment.mapId, text: "sadas", userId: req.session.userId} as IReply)
+  // await comment.save()
+  res.json({ success: true });
+};
 
 export const addRoad = async (req: Request, res: Response) => {
   const map = new Map();
@@ -15,7 +51,7 @@ export const addRoad = async (req: Request, res: Response) => {
   map.map = JSON.stringify(ReactRoad);
   await map.save();
   res.json({ success: true });
-}
+};
 
 export const addComment = async (req: Request, res: Response) => {
   try {
@@ -39,7 +75,7 @@ export const addComment = async (req: Request, res: Response) => {
     console.log(error);
     return res.json({ success: false, message: "Co loi xay ra", err: error });
   }
-}
+};
 
 export const replyComment = async (req: Request, res: Response) => {
   const { text } = req.body;
@@ -65,7 +101,7 @@ export const replyComment = async (req: Request, res: Response) => {
   await map.save();
 
   return res.json({ success: true });
-}
+};
 
 export const voteComment = async (req: Request, res: Response) => {
   try {
@@ -88,9 +124,7 @@ export const voteComment = async (req: Request, res: Response) => {
       if (type !== currentVotes[voteIndex].type) {
         // vote cua nguoi dung khac voi vote truoc do
         map.comments.id(commentId).votes = currentVotes.map((v) =>
-          v.userId.toString() === userId
-            ? { userId: v.userId, type: type }
-            : v
+          v.userId.toString() === userId ? { userId: v.userId, type: type } : v
         ) as any;
         // } else { otherwise
         map.comments.id(commentId).votes = map.comments
@@ -108,7 +142,7 @@ export const voteComment = async (req: Request, res: Response) => {
     console.log(error);
     res.json({ success: false, error });
   }
-}
+};
 
 export const starMap = async (req: Request, res: Response) => {
   try {
@@ -134,7 +168,7 @@ export const starMap = async (req: Request, res: Response) => {
     console.log(error);
     res.json({ success: false, error });
   }
-}
+};
 
 export const getListRoad = async (req: Request, res: Response) => {
   try {
@@ -152,7 +186,7 @@ export const getListRoad = async (req: Request, res: Response) => {
     console.log(error);
     res.json({ success: false, error: error });
   }
-}
+};
 
 export const startMap = async (req: Request, res: Response) => {
   try {
@@ -183,7 +217,7 @@ export const startMap = async (req: Request, res: Response) => {
     console.log(error);
     res.json({ success: false, error });
   }
-}
+};
 
 export const getMap = async (req: Request, res: Response) => {
   const userId = req.session.userId;
@@ -204,9 +238,7 @@ export const getMap = async (req: Request, res: Response) => {
     });
   }
 
-  const mapIndex = user.maps.findIndex(
-    (map) => map.mapId.toString() === mapId
-  );
+  const mapIndex = user.maps.findIndex((map) => map.mapId.toString() === mapId);
 
   return res.json({
     success: true,
@@ -215,7 +247,7 @@ export const getMap = async (req: Request, res: Response) => {
       ownerMapId: user.maps[mapIndex]._id,
     },
   });
-}
+};
 
 //
 export const changeFieldMap = async (req: Request, res: Response) => {
@@ -260,7 +292,7 @@ export const changeFieldMap = async (req: Request, res: Response) => {
     console.log(error);
     res.json({ success: false, error });
   }
-}
+};
 
 export const notePost = async (req: Request, res: Response) => {
   try {
@@ -302,7 +334,7 @@ export const notePost = async (req: Request, res: Response) => {
     console.log(error);
     res.json({ success: false, error });
   }
-}
+};
 
 export const getNote = async (req: Request, res: Response) => {
   try {
@@ -321,4 +353,4 @@ export const getNote = async (req: Request, res: Response) => {
     console.log(error);
     res.json({ success: false, error });
   }
-}
+};
