@@ -24,7 +24,8 @@ export interface IUser {
 }
 
 export interface IUserDocument extends IUser, Document {
-  maps: Types.Array<IMap>
+  maps: Types.DocumentArray<IMap>
+  verifyPassword(plainPwd: string): Promise<boolean>
 }
 
 
@@ -38,7 +39,8 @@ export interface IThirdPartyUser extends IBaseUser {
   imageUrl: string;
 }
 
-export interface IMap {
+export interface IMap extends Types.Embedded {
+  _id: Types.ObjectId
   mapId: Types.ObjectId;
   map: string;
 }

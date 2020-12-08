@@ -78,7 +78,7 @@ const CommentSchema = new Schema(
 );
 
 CommentSchema.pre<ICommentDocument>("save", async function(next) {
-  await MapModel.insertComment(this.mapId, this._id)
+  await MapModel.insertCommentId(this.mapId, this._id)
   return next()
 })
 

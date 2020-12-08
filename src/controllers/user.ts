@@ -2,30 +2,51 @@ import { Request, Response } from "express";
 import { formValidate } from "../lib/util/formValidate";
 import findOneAndUpdateOrCreate from "../lib/util/findOneAndUpdateOrCreate";
 // import User from "../models/user.model";
-import logoutFn from "../lib/util/logout";
 import {
-  IFormDataToClientFail,
   IFormDataToClientSuccess,
   EProvider,
 } from "../lib/types/form.type";
 
-import { IDataCurrentUserToClient } from "../lib/types/user.type";
+import UserModel from "../models/user";
 /**
  * /user/...
  **/
 
+// POST: Dang ky - Provider: local
+export const register = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+    const errors = formValidate(email, password);
+    if (errors) {
+      return res.json({ success: false, errors });
+    }
+    const user = new UserModel();
+    user.email = email;
+    user.password = password;
+    user.provider = "LOCAL";
+    await user.save();
+    return res.json({ success: true, message: "Tao tai khoan thanh cong" });
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.json({
+        success: false,
+        errors: [{ name: "email", error: "Email da ton tai" }],
+      });
+    }
+  }
+};
+
 // POST: Dang nhap voi tai khoan local
 export const loginLocal = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  // kiem tra thong tin dang nhap
-  const errors = formValidate(email, password);
 
+  const errors = formValidate(email, password);
   if (errors) {
-    return res.json(errors);
+    return res.json({ success: false, errors });
   }
 
-  // Kiem tra email co ton tai
-  const user = await User.findOne({ email });
+  // // Kiem tra email co ton tai
+  const user = await UserModel.findOne({ email });
   if (!user) {
     return res.json({
       success: false,
@@ -33,15 +54,15 @@ export const loginLocal = async (req: Request, res: Response) => {
         { name: "email", error: "Sai tai khoan hoac mat khau" },
         { name: "password", error: "Sai tai khoan hoac mat khau" },
       ],
-    } as IFormDataToClientFail);
+    });
   }
 
-  // Kiem tra mat khau
+  // // Kiem tra mat khau
   if (!(await user.verifyPassword(password))) {
     return res.json({
       success: false,
       errors: [{ name: "password", error: "Sai mat khau" }],
-    } as IFormDataToClientFail);
+    });
   }
 
   // dang nhap thanh cong
@@ -49,8 +70,8 @@ export const loginLocal = async (req: Request, res: Response) => {
   return res.json({
     success: true,
     data: { email: user.email, provider: user.provider },
-  } as IFormDataToClientSuccess);
-}
+  });
+};
 
 // POST: Dang nhap voi facebook
 export const loginFacebook = async (req: Request, res: Response) => {
@@ -61,71 +82,5 @@ export const loginFacebook = async (req: Request, res: Response) => {
     success: true,
     data: { email: user.email, provider: EProvider.Facebook },
   } as IFormDataToClientSuccess);
-}
+};
 
-// GET: Kiem tra thong tin nguoi dung trong session neu ton tai
-export const current = async (req: Request, res: Response) => {
-  const userId = req.session.userId;
-  if (!userId) return res.json({ user: null });
-
-  const user = await User.findById(userId);
-  if (!user) {
-    return res.json({ user: null });
-  }
-
-  const extend = {
-    name: user.extend?.name,
-    picture: user.extend?.picture,
-  };
-
-  const mapArr = user.maps.map((map) => {
-    return { mapHasStarted: map.mapId, ownerMapId: map._id };
-  });
-
-  return res.json({
-    success: true,
-    user: {
-      email: user.email,
-      extend: extend,
-      jwt: "aloalo123",
-      provider: user.provider,
-    },
-    map: mapArr
-  } as IDataCurrentUserToClient);
-}
-
-// POST: Dang ky - Provider: local
-export const register = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-  const errors = formValidate(email, password);
-  // kiem tra thong tin dang nhap
-  if (errors) {
-    return res.json(errors);
-  }
-
-  // kiem tra xem email da ton tai chua
-  const _user = await User.findOne({ email });
-  if (_user) {
-    return res.json({
-      success: false,
-      errors: [{ name: "email", error: "Email da ton tai" }],
-    } as IFormDataToClientFail);
-  }
-
-  // thuc hien tao user moi
-  const user = new User();
-  user.email = email;
-  user.password = password;
-  user.provider = EProvider.Local;
-  await user.save();
-
-  return res.json({
-    success: true,
-    message: "Dang ky tai khoan thanh cong",
-  });
-}
-
-// POST: Dang xuat
-export const logout = (req: Request, res: Response) => {
-  return logoutFn(req, res);
-}

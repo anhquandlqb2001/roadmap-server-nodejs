@@ -12,8 +12,9 @@ export interface IMap {
   map: string;
   description: Object;
   documentation: Object;
+  introduction: string;
   comments: Array<Types.ObjectId>;
-  stars: Types.ObjectId;
+  stars: Types.ObjectId[];
 }
 
 export interface IDescription {
@@ -43,6 +44,7 @@ const MapSchema = new Schema(
     },
     description: { type: Object, default: {} },
     documentation: { type: Object, default: {} },
+    introduction: { type: String },
     comments: {
       type: [mongoose.Types.ObjectId],
     },
@@ -57,13 +59,13 @@ const MapSchema = new Schema(
 );
 
 export interface IMapModel extends Model<IMapDocument> {
-  insertComment(
+  insertCommentId(
     mapId: Types.ObjectId,
     commentId: Types.ObjectId
   ): Promise<boolean>;
 }
 
-MapSchema.statics.insertComment = async function insertComment(
+MapSchema.statics.insertCommentId = async function insertCommentId(
   mapId: Types.ObjectId,
   commentId: Types.ObjectId
 ) {
