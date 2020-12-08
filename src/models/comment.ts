@@ -1,4 +1,4 @@
-import { Schema, Types, model, Document } from "mongoose";
+import { Schema, Types, model, Document, Model } from "mongoose";
 import {IUserDocument} from "./user"
 import {IMapDocument} from './map'
 import MapModel from "./map";
@@ -77,9 +77,13 @@ const CommentSchema = new Schema(
   }
 );
 
+interface ICommentModel extends Model<ICommentDocument> {
+  
+}
+
 CommentSchema.pre<ICommentDocument>("save", async function(next) {
   await MapModel.insertCommentId(this.mapId, this._id)
   return next()
 })
 
-export default model<ICommentDocument>("Comment", CommentSchema);
+export default model<ICommentDocument, ICommentModel>("Comment", CommentSchema);
