@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { COOKIE_NAME } from "../lib/util/constants";
-import UserModel from '../models/user'
+import User from '../models/user'
 
 // GET: Kiem tra thong tin nguoi dung trong session neu ton tai
 export const current = async (req: Request, res: Response) => {
   const userId = req.session.userId;
   if (!userId) return res.json({ user: null });
 
-  const user = await UserModel.findById(userId);
+  const user = await User.findById(userId);
   if (!user) {
     return res.json({ user: null });
   }

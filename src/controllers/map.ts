@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import MapModel from "../models/map";
+import Map from "../models/map";
 
 export const getListMaps = async (req: Request, res: Response) => {
   try {
-    const maps = await MapModel.find({}).select([
+    const maps = await Map.find({}).select([
       "_id",
       "name",
       "introduction",
@@ -30,7 +30,7 @@ export const getMapInfo = async (req: Request, res: Response) => {
       .json({ success: false, message: "Khong tim thay lo trinh" });
   }
   try {
-    const map = await MapModel.findById(mapId).select(["name", "description"]);
+    const map = await Map.findById(mapId).select(["name", "description"]);
     if (!map) {
       return res
         .status(404)

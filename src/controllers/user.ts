@@ -7,7 +7,7 @@ import {
   EProvider,
 } from "../lib/types/form.type";
 
-import UserModel from "../models/user";
+import User from "../models/user";
 /**
  * /user/...
  **/
@@ -20,7 +20,7 @@ export const register = async (req: Request, res: Response) => {
     if (errors) {
       return res.json({ success: false, errors });
     }
-    const user = new UserModel();
+    const user = new User();
     user.email = email;
     user.password = password;
     user.provider = "LOCAL";
@@ -46,7 +46,7 @@ export const loginLocal = async (req: Request, res: Response) => {
   }
 
   // // Kiem tra email co ton tai
-  const user = await UserModel.findOne({ email });
+  const user = await User.findOne({ email });
   if (!user) {
     return res.json({
       success: false,

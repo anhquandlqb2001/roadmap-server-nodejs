@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import recursiveSearch from "../lib/util/searchMapChange";
-import UserModel from "../models/user";
-import MapModel from "../models/map";
+import User from "../models/user";
+import Map from "../models/map";
 
 export const starMap = async (req: Request, res: Response) => {
   try {
     const mapId = req.params.mapId;
-    const map = await MapModel.findById(mapId).select(["stars"]);
+    const map = await Map.findById(mapId).select(["stars"]);
     if (!map)
       return res
         .status(404)
@@ -34,13 +34,13 @@ export const startMap = async (req: Request, res: Response) => {
       return res.status(404);
     }
 
-    const map = await MapModel.findById(mapId).select(["map"]);
+    const map = await Map.findById(mapId).select(["map"]);
     if (!map) {
       return res
         .status(404)
         .json({ success: false, message: "Khong tim thay lo trinh nay" });
     }
-    const user = await UserModel.findById(userId);
+    const user = await User.findById(userId);
 
     if (user.maps.findIndex((map) => map.mapId.toString() === mapId) !== -1) {
       return res.json({
@@ -72,7 +72,7 @@ export const getMap = async (req: Request, res: Response) => {
       .json({ success: false, message: "Khong tim thay lo trinh nay" });
   }
 
-  const map = await UserModel.findOne({
+  const map = await User.findOne({
     _id: userId,
     "maps.mapId": mapId,
   }).select(["maps.map"]);
@@ -110,7 +110,7 @@ export const updateMap = async (req: Request, res: Response) => {
       return res.status(404).json({ success: false });
     }
 
-    const user = await UserModel.findOne({
+    const user = await User.findOne({
       _id: userId,
       "maps.mapId": mapId,
     }).select(["maps.map"]);

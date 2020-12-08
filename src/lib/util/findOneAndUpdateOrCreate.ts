@@ -1,6 +1,5 @@
 // import User from "../../entities/User";
-import { IUserDocument } from "../types/index.type";
-import User from "../../models/user.model";
+import User, { IUserDocument } from "../../models/user";
 
 const findOneAndUpdateOrCreate = async (data: IUserDocument) => {
   // kiem tra xem nguoi dung da ton tai chua
@@ -9,7 +8,8 @@ const findOneAndUpdateOrCreate = async (data: IUserDocument) => {
     // neu chua ton tai
     const user = new User();
     user.email = data.email;
-    user.extend = data.extend;
+    user.imageUrl = data.imageUrl
+    user.token = data.token
     user.provider = data.provider;
     await user.save();
     return user;
@@ -18,7 +18,7 @@ const findOneAndUpdateOrCreate = async (data: IUserDocument) => {
   // cap nhat thong tin nguoi dung
   const user = await User.findOneAndUpdate(
     { _id: data._id },
-    { extend: data.extend }
+    { token: data.token, imageUrl: data.imageUrl }
   );
   return user;
   // return await User.findOne({ where: { email: data.email } });

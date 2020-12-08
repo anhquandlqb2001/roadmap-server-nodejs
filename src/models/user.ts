@@ -109,4 +109,4 @@ export interface IUserModel extends Model<IUserDocument> {
   verifyPassword(plainPwd: string): boolean
 }
 
-export default mongoose.model<IUserDocument, IUserModel>("UserModel", UserSchema);
+export default mongoose.model<IUserDocument, IUserModel>("User", UserSchema);

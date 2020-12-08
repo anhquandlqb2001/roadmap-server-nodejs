@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import CommentModel from "../models/comment";
+import Comment from "../models/comment";
 
 export const addComment = async (req: Request, res: Response) => {
   try {
@@ -9,7 +9,7 @@ export const addComment = async (req: Request, res: Response) => {
     if (!text) {
       return res.json({ success: false });
     }
-    const comment = new CommentModel();
+    const comment = new Comment();
     comment.userId = userId;
     comment.mapId = mapId;
     comment.text = text;
@@ -33,7 +33,7 @@ export const replyComment = async (req: Request, res: Response) => {
     }
     const userId = req.session.userId;
 
-    const comment = await CommentModel.findOne({
+    const comment = await Comment.findOne({
       _id: commentId,
       mapId: mapId,
     }).select(["replys"]);

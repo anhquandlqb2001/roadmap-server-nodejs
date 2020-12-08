@@ -77,4 +77,4 @@ MapSchema.statics.insertCommentId = async function insertCommentId(
   return true;
 };
 
-export default mongoose.model<IMapDocument, IMapModel>("MapModel", MapSchema);
+export default mongoose.model<IMapDocument, IMapModel>("Map", MapSchema);
