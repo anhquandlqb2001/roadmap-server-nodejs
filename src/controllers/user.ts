@@ -84,3 +84,29 @@ export const loginFacebook = async (req: Request, res: Response) => {
   } as IFormDataToClientSuccess);
 };
 
+
+
+// GET: Kiem tra thong tin nguoi dung trong session neu ton tai
+export const current = async (req: Request, res: Response) => {
+  const userId = req.session.userId;
+  if (!userId) return res.json({ user: null });
+
+  const user = await User.findById(userId);
+  if (!user) {
+    return res.json({ user: null });
+  }
+
+  const mapArr = user.maps.map((map) => {
+    return { mapHasStarted: map.mapId, ownerMapId: map._id };
+  });
+
+  return res.json({
+    success: true,
+    user: {
+      email: user.email,
+      jwt: user?.jwt,
+      provider: user.provider,
+    },
+    map: mapArr,
+  });
+};

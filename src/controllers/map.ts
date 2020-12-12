@@ -36,7 +36,7 @@ export const getMapInfo = async (req: Request, res: Response) => {
         .status(404)
         .json({ success: false, message: "Khong tim thay lo trinh" });
     }
-
+    
     return res.json({success: true, data: map})
 
   } catch (error) {

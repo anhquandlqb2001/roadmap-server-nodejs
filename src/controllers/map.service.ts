@@ -65,7 +65,7 @@ export const startMap = async (req: Request, res: Response) => {
 export const getMap = async (req: Request, res: Response) => {
   const userId = req.session.userId;
   const mapId = req.params.mapId;
-
+  
   if (!mapId) {
     return res
       .status(404)
