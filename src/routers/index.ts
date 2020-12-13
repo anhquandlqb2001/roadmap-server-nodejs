@@ -9,6 +9,7 @@ import MapServiceRouter from './map.service'
 import UserServiceRouter from './user.service'
 import CommentServiceRouter from './comment.service'
 
+import AdminRouter from './admin'
 
 const routes = (app: Application) => {
   app.use("/api/node/user", UserRouter);
@@ -22,6 +23,8 @@ const routes = (app: Application) => {
   app.use("/api/node/service/user", isAuth, UserServiceRouter)
 
   app.use("/api/node/service/comment", isAuth, CommentServiceRouter)
+
+  app.use("/api/node/admin", AdminRouter)
 
 };
 

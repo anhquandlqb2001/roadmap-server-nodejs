@@ -75,7 +75,7 @@ export const getMap = async (req: Request, res: Response) => {
   const map = await User.findOne({
     _id: userId,
     "maps.mapId": mapId,
-  }).select(["maps.map"]);
+  }).select(["maps.$"]);
 
   if (!map) {
     return res.json({
@@ -97,14 +97,6 @@ export const updateMap = async (req: Request, res: Response) => {
   try {
     const userId = req.session.userId;
     const mapId = req.params.mapId;
-    const ownerMapId = req.params.ownerMapId;
-
-    // if (ownerMapId === "null") {
-    //   return res.json({
-    //     success: false,
-    //     message: "Ban phai bat dau lo trinh nay",
-    //   });
-    // }
 
     if (!mapId) {
       return res.status(404).json({ success: false });
