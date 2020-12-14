@@ -3,6 +3,20 @@ import recursiveSearch from "../lib/util/searchMapChange";
 import User from "../models/user";
 import Map from "../models/map";
 
+// export const checkStartedMap = async (req: Request, res: Response) => {
+//   try {
+//     const userId = req.session.userId;
+//     const mapId = req.params.mapId;
+
+//     const user = await User.findOne({ _id: userId, "maps.mapId": mapId });
+//     if (user) return res.json({ success: true, hasStarted: true });
+//     return res.json({ success: true, hasStarted: false });
+//   } catch (error) {
+//     console.log(error);
+//     return res.json({ success: false });
+//   }
+// };
+
 export const starMap = async (req: Request, res: Response) => {
   try {
     const mapId = req.params.mapId;
@@ -65,7 +79,7 @@ export const startMap = async (req: Request, res: Response) => {
 export const getMap = async (req: Request, res: Response) => {
   const userId = req.session.userId;
   const mapId = req.params.mapId;
-  
+
   if (!mapId) {
     return res
       .status(404)
@@ -101,11 +115,11 @@ export const updateMap = async (req: Request, res: Response) => {
     if (!mapId) {
       return res.status(404).json({ success: false });
     }
-
+    //  stringify
     const user = await User.findOne({
       _id: userId,
       "maps.mapId": mapId,
-    }).select(["maps.map"]);
+    }).select(["maps.$"]);
     if (!user) return res.status(404).json({ success: false });
 
     const { fieldChange, currentValue } = req.body;
@@ -120,9 +134,12 @@ export const updateMap = async (req: Request, res: Response) => {
       !currentValue
     );
 
-    user.maps[0].map = JSON.stringify(newMap);
+    await User.findOneAndUpdate(
+      { _id: userId, "maps.mapId": mapId },
+      { $set: { "maps.$.map": JSON.stringify(newMap) } }
+    );
 
-    await user.save();
+    // await user.save();
 
     return res.json({
       success: true,
