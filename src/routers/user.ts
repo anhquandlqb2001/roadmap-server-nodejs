@@ -9,6 +9,6 @@ router.post("/login_facebook", loginFacebook)
 
 router.post("/register", register);
 
-router.get("/current", current);
+router.get("/", current);
 
 export default router;
