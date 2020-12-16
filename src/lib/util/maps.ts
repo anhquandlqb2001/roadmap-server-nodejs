@@ -13,7 +13,10 @@ export const ReactRoad = {
         value: false,
         resources: {},
       },
-      "class-components": true,
+      "class-components": {
+        value: false,
+        resources: {}
+      },
     },
     "props-vs-state": {
       value: false,
@@ -66,7 +69,10 @@ export const ReactRoad = {
         value: false,
         resources: {},
       },
-      usereducer: true,
+      usereducer: {
+        value: false,
+        resources: {},
+      },
       usecontext: {
         value: false,
         resources: {},
