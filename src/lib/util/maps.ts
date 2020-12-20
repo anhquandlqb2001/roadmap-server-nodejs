@@ -55,27 +55,27 @@ export const ReactRoad = {
         value: false,
         resources: {},
       },
-    },
-    "common-hooks": {
-      usecallback: {
-        value: false,
-        resources: {},
-      },
-      useref: {
-        value: false,
-        resources: {},
-      },
-      usememo: {
-        value: false,
-        resources: {},
-      },
-      usereducer: {
-        value: false,
-        resources: {},
-      },
-      usecontext: {
-        value: false,
-        resources: {},
+      "common-hooks": {
+        usecallback: {
+          value: false,
+          resources: {},
+        },
+        useref: {
+          value: false,
+          resources: {},
+        },
+        usememo: {
+          value: false,
+          resources: {},
+        },
+        usereducer: {
+          value: false,
+          resources: {},
+        },
+        usecontext: {
+          value: false,
+          resources: {},
+        },
       },
     },
     context: {

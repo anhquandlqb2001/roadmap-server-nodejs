@@ -13,6 +13,11 @@ export const addRoad = async (req: Request, res: Response) => {
     detail: "Become a React developer",
     mapId: "5fb12e6e581d3b79b1362e13"
   }
+  map.documentation = {
+    path: "https://paq19it5.github.io/roadmap-docs/php.md",
+    mapId: "5fb12e6e581d3b79b1362e13"
+  }
+
   map.map = JSON.stringify(ReactRoad);
   await map.save();
   res.json({ success: true });
