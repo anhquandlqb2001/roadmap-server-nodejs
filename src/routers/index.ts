@@ -14,11 +14,11 @@ import AdminRouter from './admin'
 const routes = (app: Application) => {
   app.use("/api/node/user", UserRouter);
 
-  app.use("/api/node/road", MapRouter);
+  app.use("/api/node/map", MapRouter);
 
   app.use("/api/node/comment", CommentRouter);
 
-  app.use("/api/node/service/road", isAuth, MapServiceRouter)
+  app.use("/api/node/service/map", isAuth, MapServiceRouter)
 
   app.use("/api/node/service/user", isAuth, UserServiceRouter)
 

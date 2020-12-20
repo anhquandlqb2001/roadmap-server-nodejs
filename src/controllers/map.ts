@@ -44,3 +44,14 @@ export const getMapInfo = async (req: Request, res: Response) => {
     res.status(500).json({ success: false });
   }
 };
+
+
+export const getMapDocumentPathById = async (req: Request, res: Response) => {
+  try {
+    const mapId = req.params.mapId
+    const map = await Map.findById(mapId).select("documentation")
+    return res.json({success: true, map})
+  } catch (e) {
+    res.status(500).json({success: false})    
+  }
+}

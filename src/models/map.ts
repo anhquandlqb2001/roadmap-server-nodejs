@@ -25,7 +25,7 @@ export interface IDescription {
 
 export interface IDocumentation {
   mapId: IMapDocument["_id"];
-  text: string;
+  path: string
 }
 
 export interface IMapDocument extends IMap, Document, SchemaTimestampsConfig {
