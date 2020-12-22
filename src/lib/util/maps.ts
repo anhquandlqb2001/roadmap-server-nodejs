@@ -15,7 +15,7 @@ export const ReactRoad = {
       },
       "class-components": {
         value: false,
-        resources: {}
+        resources: {},
       },
     },
     "props-vs-state": {
@@ -48,182 +48,182 @@ export const ReactRoad = {
         resources: {},
       },
     },
-  },
-  "advanced-topics": {
-    hooks: {
-      "writing-your-own-hooks": {
-        value: false,
-        resources: {},
-      },
-      "common-hooks": {
-        usecallback: {
+    "advanced-topics": {
+      hooks: {
+        "writing-your-own-hooks": {
           value: false,
           resources: {},
         },
-        useref: {
+        "common-hooks": {
+          usecallback: {
+            value: false,
+            resources: {},
+          },
+          useref: {
+            value: false,
+            resources: {},
+          },
+          usememo: {
+            value: false,
+            resources: {},
+          },
+          usereducer: {
+            value: false,
+            resources: {},
+          },
+          usecontext: {
+            value: false,
+            resources: {},
+          },
+        },
+      },
+      context: {
+        value: false,
+        resources: {},
+      },
+      refs: {
+        value: false,
+        resources: {},
+      },
+      "render-props": {
+        value: false,
+        resources: {},
+      },
+      "code-splitting": {
+        value: false,
+        resources: {},
+      },
+      "high-order-components": {
+        value: false,
+        resources: {},
+      },
+      portals: {
+        value: false,
+        resources: {},
+      },
+      "error-boundaries": {
+        value: false,
+        resources: {},
+      },
+      "fiber-architecture": {
+        value: false,
+        resources: {},
+      },
+    },
+    ecosystem: {
+      routers: {
+        "react-router": {
           value: false,
           resources: {},
         },
-        usememo: {
-          value: false,
-          resources: {},
-        },
-        usereducer: {
-          value: false,
-          resources: {},
-        },
-        usecontext: {
+        "reach-router": {
           value: false,
           resources: {},
         },
       },
-    },
-    context: {
-      value: false,
-      resources: {},
-    },
-    refs: {
-      value: false,
-      resources: {},
-    },
-    "render-props": {
-      value: false,
-      resources: {},
-    },
-    "code-splitting": {
-      value: false,
-      resources: {},
-    },
-    "high-order-components": {
-      value: false,
-      resources: {},
-    },
-    portals: {
-      value: false,
-      resources: {},
-    },
-    "error-boundaries": {
-      value: false,
-      resources: {},
-    },
-    "fiber-architecture": {
-      value: false,
-      resources: {},
-    },
-  },
-  ecosystem: {
-    routers: {
-      "react-router": {
-        value: false,
-        resources: {},
+      ssr: {
+        nextjs: {
+          value: false,
+          resources: {},
+        },
       },
-      "reach-router": {
-        value: false,
-        resources: {},
+      ssg: {
+        nextjs: {
+          value: false,
+          resources: {},
+        },
+        gatsby: {
+          value: false,
+          resources: {},
+        },
       },
-    },
-    ssr: {
-      nextjs: {
-        value: false,
-        resources: {},
+      "api-calls": {
+        axios: {
+          value: false,
+          resources: {},
+        },
+        unfetch: {
+          value: false,
+          resources: {},
+        },
+        superagent: {
+          value: false,
+          resources: {},
+        },
+        "use-http": {
+          value: false,
+          resources: {},
+        },
       },
-    },
-    ssg: {
-      nextjs: {
-        value: false,
-        resources: {},
+      mobile: {
+        "react-native": {
+          value: false,
+          resources: {},
+        },
       },
-      gatsby: {
-        value: false,
-        resources: {},
+      form: {
+        "react-hook-form": {
+          value: false,
+          resources: {},
+        },
+        formik: {
+          value: false,
+          resources: {},
+        },
+        "final-form": {
+          value: false,
+          resources: {},
+        },
       },
-    },
-    "api-calls": {
-      axios: {
-        value: false,
-        resources: {},
+      testing: {
+        jest: {
+          value: false,
+          resources: {},
+        },
+        "react-testing-library": {
+          value: false,
+          resources: {},
+        },
+        cypress: {
+          value: false,
+          resources: {},
+        },
       },
-      unfetch: {
-        value: false,
-        resources: {},
+      "state-management": {
+        "context/state": {
+          value: false,
+          resources: {},
+        },
+        redux: {
+          value: false,
+          resources: {},
+        },
+        mobx: {
+          value: false,
+          resources: {},
+        },
       },
-      superagent: {
-        value: false,
-        resources: {},
-      },
-      "use-http": {
-        value: false,
-        resources: {},
-      },
-    },
-    mobile: {
-      "react-native": {
-        value: false,
-        resources: {},
-      },
-    },
-    form: {
-      "react-hook-form": {
-        value: false,
-        resources: {},
-      },
-      formik: {
-        value: false,
-        resources: {},
-      },
-      "final-form": {
-        value: false,
-        resources: {},
-      },
-    },
-    testing: {
-      jest: {
-        value: false,
-        resources: {},
-      },
-      "react-testing-library": {
-        value: false,
-        resources: {},
-      },
-      cypress: {
-        value: false,
-        resources: {},
-      },
-    },
-    "state-management": {
-      "context/state": {
-        value: false,
-        resources: {},
-      },
-      redux: {
-        value: false,
-        resources: {},
-      },
-      mobx: {
-        value: false,
-        resources: {},
-      },
-    },
-    styling: {
-      charkaui: {
-        value: false,
-        resources: {},
-      },
-      materialui: {
-        value: false,
-        resources: {},
-      },
-      "ant-design": {
-        value: false,
-        resources: {},
-      },
-      "styled-components": {
-        value: false,
-        resources: {},
-      },
-      emotion: {
-        value: false,
-        resources: {},
+      styling: {
+        charkaui: {
+          value: false,
+          resources: {},
+        },
+        materialui: {
+          value: false,
+          resources: {},
+        },
+        "ant-design": {
+          value: false,
+          resources: {},
+        },
+        "styled-components": {
+          value: false,
+          resources: {},
+        },
+        emotion: {
+          value: false,
+          resources: {},
+        },
       },
     },
   },
@@ -298,96 +298,54 @@ export const PHPRoad = {
         },
       },
     },
-  },
-  "chuong-trinh-php-dau-tien": {
-    "php-co-ban": {
-      "nhung-php-trong-html": {
-        value: false,
-        resources: {},
-      },
-      "comment-trong-php": {
-        value: false,
-        resources: {},
-      },
-      "6-kieu-du-lieu-trong-php": {
-        value: false,
-        resources: {},
-      },
-      "khai-bao-bien-va-hang-so": {
-        value: false,
-        resources: {},
-      },
-    },
-    "lam-viec-voi-du-lieu": {
-      "cac-build-in-function": {
-        value: false,
-        resources: {},
-      },
-      "cac-bieu-thuc-dieu-kien": {
-        "if-else": {
+    "chuong-trinh-php-dau-tien": {
+      "php-co-ban": {
+        "nhung-php-trong-html": {
           value: false,
           resources: {},
         },
-        switch: {
+        "comment-trong-php": {
+          value: false,
+          resources: {},
+        },
+        "6-kieu-du-lieu-trong-php": {
+          value: false,
+          resources: {},
+        },
+        "khai-bao-bien-va-hang-so": {
           value: false,
           resources: {},
         },
       },
-      "duyet-du-lieu": {
-        foreach: {
+      "lam-viec-voi-du-lieu": {
+        "cac-build-in-function": {
           value: false,
           resources: {},
         },
-      },
-    },
-    "lam-viec-voi-database": {
-      phpmyadmin: {
-        "dang-nhap": {
-          value: false,
-          resources: {},
-        },
-        "dang-xuat": {
-          value: false,
-          resources: {},
-        },
-        "thuc-thi-sql": {
-          value: false,
-          resources: {},
-        },
-        "them-xuat-file-sql": {
-          value: false,
-          resources: {},
-        },
-      },
-      "cac-lenh-sql-co-ban": {
-        select: {
-          value: false,
-          resources: {},
-        },
-        insert: {
-          value: false,
-          resources: {},
-        },
-        update: {
-          value: false,
-          resources: {},
-        },
-        delete: {
-          value: false,
-          resources: {},
-        },
-      },
-      "ket-noi-database-voi-php": {
-        pdo: {
-          connect: {
+        "cac-bieu-thuc-dieu-kien": {
+          "if-else": {
             value: false,
             resources: {},
           },
-          fetch: {
+          switch: {
             value: false,
             resources: {},
           },
-          exception: {
+        },
+        "duyet-du-lieu": {
+          foreach: {
+            value: false,
+            resources: {},
+          },
+        },
+      },
+      "lam-viec-voi-database": {
+        phpmyadmin: {
+          "dang-nhap": {
+            value: false,
+            resources: {},
+          },
+          "dang-xuat": {
             value: false,
             resources: {},
           },
@@ -395,54 +353,96 @@ export const PHPRoad = {
             value: false,
             resources: {},
           },
-        },
-        mysqli: {
-          connect: {
-            value: false,
-            resources: {},
-          },
-          fetch: {
-            value: false,
-            resources: {},
-          },
-          exception: {
-            value: false,
-            resources: {},
-          },
-          "thuc-thi-sql": {
+          "them-xuat-file-sql": {
             value: false,
             resources: {},
           },
         },
+        "cac-lenh-sql-co-ban": {
+          select: {
+            value: false,
+            resources: {},
+          },
+          insert: {
+            value: false,
+            resources: {},
+          },
+          update: {
+            value: false,
+            resources: {},
+          },
+          delete: {
+            value: false,
+            resources: {},
+          },
+        },
+        "ket-noi-database-voi-php": {
+          pdo: {
+            connect: {
+              value: false,
+              resources: {},
+            },
+            fetch: {
+              value: false,
+              resources: {},
+            },
+            exception: {
+              value: false,
+              resources: {},
+            },
+            "thuc-thi-sql": {
+              value: false,
+              resources: {},
+            },
+          },
+          mysqli: {
+            connect: {
+              value: false,
+              resources: {},
+            },
+            fetch: {
+              value: false,
+              resources: {},
+            },
+            exception: {
+              value: false,
+              resources: {},
+            },
+            "thuc-thi-sql": {
+              value: false,
+              resources: {},
+            },
+          },
+        },
       },
-    },
-    "lay-du-lieu-tu-request": {
-      "get-method": {
-        value: false,
-        resources: {},
-      },
-      "post-method": {
-        value: false,
-        resources: {},
-      },
-    },
-    "mo-hinh-mvc": {
-      "loi-ich": {
-        value: false,
-        resources: {},
-      },
-      "cau-truc": {
-        models: {
+      "lay-du-lieu-tu-request": {
+        "get-method": {
           value: false,
           resources: {},
         },
-        views: {
+        "post-method": {
           value: false,
           resources: {},
         },
-        controllers: {
+      },
+      "mo-hinh-mvc": {
+        "loi-ich": {
           value: false,
           resources: {},
+        },
+        "cau-truc": {
+          models: {
+            value: false,
+            resources: {},
+          },
+          views: {
+            value: false,
+            resources: {},
+          },
+          controllers: {
+            value: false,
+            resources: {},
+          },
         },
       },
     },
