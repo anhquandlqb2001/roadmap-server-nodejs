@@ -35,7 +35,7 @@ const config = (app: Application) => {
       resave: false,
     })
   );
-  app.use(cors({ credentials: true, origin: endpoints.CORS_ORIGIN }));
+  app.use(cors({ credentials: true, origin: ["http://localhost:3000", "http://localhost:3001"] }));
   app.use(express.json());
   app.use(bodyParser.urlencoded({ extended: false }));
   // app.use(passport.initialize());

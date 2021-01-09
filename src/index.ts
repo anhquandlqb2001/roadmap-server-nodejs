@@ -1,11 +1,14 @@
 import "reflect-metadata";
 import express from "express";
-import Routes from "./src/routers";
-import appConfig from "./src/lib/config/app.config";
+import Routes from "./routers";
+import appConfig from "./lib/config/app.config";
 import mongoose from 'mongoose'
+import config from './lib/config/endpoints.config'
 
 const main = async () => {
-  mongoose.connect(process.env.DATABASE_URI_DEV, {
+  
+  
+  mongoose.connect(config.DATABASE_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,

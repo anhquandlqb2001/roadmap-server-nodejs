@@ -256,45 +256,45 @@ export const PHPRoad = {
       javascript: {
         value: false,
         resources: {},
+      }
+    },
+    "cac-phan-mem-can-thiet": {
+      "phan-mem-soan-thao": {
+        "visual-studio-code": {
+          value: false,
+          resources: {},
+        },
+        netbean: {
+          value: false,
+          resources: {},
+        },
+        "php-storm": {
+          value: false,
+          resources: {},
+        },
+        "notepad++": {
+          value: false,
+          resources: {},
+        },
       },
-      "cac-phan-mem-can-thiet": {
-        "phan-mem-soan-thao": {
-          "visual-studio-code": {
-            value: false,
-            resources: {},
-          },
-          netbean: {
-            value: false,
-            resources: {},
-          },
-          "php-storm": {
-            value: false,
-            resources: {},
-          },
-          "notepad++": {
-            value: false,
-            resources: {},
-          },
+      server: {
+        apache: {
+          value: false,
+          resources: {},
         },
-        server: {
-          apache: {
-            value: false,
-            resources: {},
-          },
-          iis: {
-            value: false,
-            resources: {},
-          },
+        iis: {
+          value: false,
+          resources: {},
         },
-        "co-so-du-lieu": {
-          xampp: {
-            value: false,
-            resources: {},
-          },
-          wampserver: {
-            value: false,
-            resources: {},
-          },
+      },
+      "co-so-du-lieu": {
+        xampp: {
+          value: false,
+          resources: {},
+        },
+        wampserver: {
+          value: false,
+          resources: {},
         },
       },
     },
@@ -396,22 +396,8 @@ export const PHPRoad = {
             },
           },
           mysqli: {
-            connect: {
-              value: false,
-              resources: {},
-            },
-            fetch: {
-              value: false,
-              resources: {},
-            },
-            exception: {
-              value: false,
-              resources: {},
-            },
-            "thuc-thi-sql": {
-              value: false,
-              resources: {},
-            },
+            value: false,
+            resources: {}
           },
         },
       },

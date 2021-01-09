@@ -15,5 +15,5 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
-  "include": ["src/**/*", "index.ts"]
+  "include": ["src/**/*", "src/index.ts"]
 }

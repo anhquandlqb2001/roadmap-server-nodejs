@@ -26,7 +26,7 @@ export const getMapInfo = async (req: Request, res: Response) => {
       .json({ success: false, message: "Khong tim thay lo trinh" });
   }
   try {
-    const map = await Map.findById(mapId).select(["name", "description"]);
+    const map = await Map.findById(mapId).select(["name", "description", "documentation", "introduction"]);
     if (!map) {
       return res
         .status(404)

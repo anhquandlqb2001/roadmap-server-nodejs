@@ -11,7 +11,11 @@ import CommentServiceRouter from './comment.service'
 
 import AdminRouter from './admin'
 
+import CommonRouter from "./common";
+
 const routes = (app: Application) => {
+  app.use("/api/node/common", CommonRouter);
+
   app.use("/api/node/user", UserRouter);
 
   app.use("/api/node/map", MapRouter);
