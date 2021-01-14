@@ -138,6 +138,10 @@ export const ReactRoad = {
         },
       },
       "api-calls": {
+        apollo: {
+          value: false,
+          resources: {}
+        },
         axios: {
           value: false,
           resources: {},
@@ -390,7 +394,7 @@ export const PHPRoad = {
               value: false,
               resources: {},
             },
-            "thuc-thi-sql": {
+            "execute SQL": {
               value: false,
               resources: {},
             },
@@ -434,3 +438,84 @@ export const PHPRoad = {
     },
   },
 };
+
+
+export const TestMap = {
+  "buoc1": {
+    "buoc2": {
+      "value": false,
+      "resources": {}
+    }
+  }
+}
+
+
+export const LaravelRoutingMap = {
+  "laravel-routing": {
+    "views": {
+      "php-blade-file": {
+        "value": false,
+        "resources": {}
+      },
+      "variables-sharing": {
+        "value": false,
+        "resources": {}
+      }
+    },
+    "controllers": {
+      "getting-user-data": {
+        "value": false,
+        "resources": {}
+      },
+      "import-library": {
+        "value": false,
+        "resources": {}
+      },
+      "resource-controllers": {
+        "value": false,
+        "resources": {}
+      }
+    },
+    "route-model-binding": {
+      "value": false,
+      "resources": {}
+    },
+    "csrf": {
+      "value": false,
+      "resources": {}
+    },
+    "route": {
+      "methods": {
+        "get": { "value": false, "resources": {} },
+        "post": { "value": false, "resources": {} },
+        "put": { "value": false, "resources": {} },
+        "delete": { "value": false, "resources": {} },
+        "any": { "value": false, "resources": {} }
+      },
+      "naming": {
+        "convention": { "value": false, "resources": {} },
+        "model-verb": { "value": false, "resources": {} },
+        "route-name": { "value": false, "resources": {} }
+      }
+    },
+    "group-route": {
+      "middleware": { "value": false, "resources": {} },
+      "path-prefix": { "value": false, "resources": {} },
+      "name-prefix": { "value": false, "resources": {} }
+    },
+    "redirect-aborting": {
+      "redirect-method": {
+        "home": { "value": false, "resources": {} },
+        "refresh": { "value": false, "resources": {} },
+        "away": { "value": false, "resources": {} },
+        "secure": { "value": false, "resources": {} }
+      },
+      "aborting-method": {
+        "abort": { "value": false, "resources": {} },
+        "abort-if": { "value": false, "resources": {} },
+        "abort-unless": { "value": false, "resources": {} }
+      }
+    }
+  }
+}
+

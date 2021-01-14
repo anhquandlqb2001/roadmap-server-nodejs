@@ -2,10 +2,7 @@ import { Request, Response } from "express";
 import { formValidate } from "../lib/util/formValidate";
 import findOneAndUpdateOrCreate from "../lib/util/findOneAndUpdateOrCreate";
 // import User from "../models/user.model";
-import {
-  IFormDataToClientSuccess,
-  EProvider,
-} from "../lib/types/form.type";
+import { IFormDataToClientSuccess, EProvider } from "../lib/types/form.type";
 
 import User from "../models/user";
 /**
@@ -25,7 +22,12 @@ export const register = async (req: Request, res: Response) => {
     user.password = password;
     user.provider = "LOCAL";
     await user.save();
-    return res.json({ success: true, message: "Tao tai khoan thanh cong" });
+
+    req.session.userId = user._id;
+    return res.json({
+      success: true,
+      data: { email: user.email, provider: user.provider },
+    });
   } catch (error) {
     if (error.code === 11000) {
       return res.json({
@@ -83,8 +85,6 @@ export const loginFacebook = async (req: Request, res: Response) => {
     data: { email: user.email, provider: EProvider.Facebook },
   } as IFormDataToClientSuccess);
 };
-
-
 
 // GET: Kiem tra thong tin nguoi dung trong session neu ton tai
 export const current = async (req: Request, res: Response) => {

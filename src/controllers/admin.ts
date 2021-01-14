@@ -1,25 +1,25 @@
 import Map from "../models/map";
 import mongoose from "mongoose";
-import { PHPRoad, ReactRoad } from "../lib/util/maps";
+import { LaravelRoutingMap, PHPRoad, ReactRoad, TestMap } from "../lib/util/maps";
 import { Request, Response } from "express";
 import Common from "../models/common";
 
 export const addRoad = async (req: Request, res: Response) => {
   const map = new Map();
-  map._id = mongoose.Types.ObjectId("5fce651a4f9834cc1e3b135b");
-  map.name = "PHP";
-  map.introduction = "A complete road to become a PHP developer";
+  map._id = mongoose.Types.ObjectId("5ffd771da2da5438b5a83447");
+  map.name = "test";
+  map.introduction = "A complete road to become a REACT developer";
   map.description = {
-    title: "Complete PHP Road",
-    detail: "Become a PHP developer",
-    mapId: "5fce651a4f9834cc1e3b135b",
+    title: "Complete REACT Road",
+    detail: "Become a REACT developer",
+    mapId: "5ffd771da2da5438b5a83447",
   };
   map.documentation = {
     path: "https://paq19it5.github.io/roadmap-docs/php.md",
-    mapId: "5fce651a4f9834cc1e3b135b",
+    mapId: "5ffd771da2da5438b5a83447",
   };
 
-  map.map = JSON.stringify(PHPRoad);
+  map.map = JSON.stringify(LaravelRoutingMap);
   await map.save();
   res.json({ success: true });
 };

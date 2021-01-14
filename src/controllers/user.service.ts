@@ -9,9 +9,9 @@ export const logout = (req: Request, res: Response) => {
     req.session.destroy((err: any) => {
       res.clearCookie(COOKIE_NAME);
       if (err) {
-        return res.status(500).json({ message: "fail: ", err });
+        return res.status(500).json({ success: false });
       }
-      return res.json({ message: "ok" });
+      return res.json({ success: true });
     });
   });
 };
