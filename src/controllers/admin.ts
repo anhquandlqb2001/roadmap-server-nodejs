@@ -1,27 +1,42 @@
 import Map from "../models/map";
-import mongoose from "mongoose";
-import { LaravelRoutingMap, PHPRoad, ReactRoad, TestMap } from "../lib/util/maps";
+import {
+  LaravelRoutingMap,
+  PHPRoad,
+  ReactRoad,
+  TestMap,
+} from "../lib/util/maps";
 import { Request, Response } from "express";
 import Common from "../models/common";
+import Admin from "../models/admin";
+import { uploadMapImage } from "../lib/config/cloudinary.config";
 
 export const addRoad = async (req: Request, res: Response) => {
-  const map = new Map();
-  map._id = mongoose.Types.ObjectId("5ffd771da2da5438b5a83447");
-  map.name = "test";
-  map.introduction = "A complete road to become a REACT developer";
-  map.description = {
-    title: "Complete REACT Road",
-    detail: "Become a REACT developer",
-    mapId: "5ffd771da2da5438b5a83447",
-  };
-  map.documentation = {
-    path: "https://paq19it5.github.io/roadmap-docs/php.md",
-    mapId: "5ffd771da2da5438b5a83447",
-  };
+  try {
+    if (!req.file) {
+      return res.json({ success: false });
+    }
+    const data = req.body;
+    const result = await uploadMapImage(req.file.path);
+    const map = new Map();
+    map.name = data.name;
+    map.introduction = data.introduction;
+    map.description = {
+      title: data.title,
+      detail: data.detail,
+      mapId: map._id,
+    };
+    map.documentation = {
+      path: data.path,
+      mapId: map._id,
+    };
 
-  map.map = JSON.stringify(LaravelRoutingMap);
-  await map.save();
-  res.json({ success: true });
+    map.map = data.map
+    map.mapUrl = result.url;
+    await map.save();
+    res.json({ success: true });
+  } catch (error) {
+    return res.json({ success: false });
+  }
 };
 
 export const updateHomepageContent = async (req: Request, res: Response) => {
@@ -33,10 +48,7 @@ export const updateHomepageContent = async (req: Request, res: Response) => {
       { heading: heading, detail: detail },
       { upsert: true }
     );
-    // const cm = await Common.findOne({}, { upsert: true });
-    // cm.heading = heading;
-    // cm.detail = detail;
-    // await cm.save();
+
     return res.json({ success: true });
   } catch (error) {
     console.log(error);
@@ -44,17 +56,37 @@ export const updateHomepageContent = async (req: Request, res: Response) => {
   }
 };
 
-
 export const updateMapInfo = async (req: Request, res: Response) => {
   try {
     const data = req.body;
-    const mapId = req.params.mapId
-    await Map.findByIdAndUpdate(mapId,
-      data
-    );
+    const mapId = req.params.mapId;
+    await Map.findByIdAndUpdate(mapId, data);
     return res.json({ success: true });
   } catch (error) {
     console.log(error);
     return res.json({ success: false, error });
+  }
+};
+
+export const auth = async (req: Request, res: Response) => {
+  try {
+    const data = req.body;
+    const admin = await Admin.findOne({
+      email: data.email,
+      password: data.password,
+    });
+    return !admin ? res.json({ success: false }) : res.json({ success: true });
+  } catch (error) {}
+};
+
+export const deleteMap = async (req: Request, res: Response) => {
+  try {
+    const mapId = req.params.mapId;
+
+    await Map.deleteOne({ _id: mapId });
+
+    return res.json({ success: true });
+  } catch (error) {
+    return res.json({ success: false });
   }
 };

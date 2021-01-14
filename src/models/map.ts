@@ -15,6 +15,7 @@ export interface IMap {
   introduction: string;
   comments: Array<Types.ObjectId>;
   stars: Types.ObjectId[];
+  mapUrl: string
 }
 
 export interface IDescription {
@@ -51,6 +52,7 @@ const MapSchema = new Schema(
     stars: {
       type: [mongoose.Types.ObjectId],
     },
+    mapUrl: {type: String, required: true}
   },
   {
     collection: "maps",

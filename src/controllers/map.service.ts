@@ -3,20 +3,6 @@ import recursiveSearch from "../lib/util/searchMapChange";
 import User from "../models/user";
 import Map from "../models/map";
 
-// export const checkStartedMap = async (req: Request, res: Response) => {
-//   try {
-//     const userId = req.session.userId;
-//     const mapId = req.params.mapId;
-
-//     const user = await User.findOne({ _id: userId, "maps.mapId": mapId });
-//     if (user) return res.json({ success: true, hasStarted: true });
-//     return res.json({ success: true, hasStarted: false });
-//   } catch (error) {
-//     console.log(error);
-//     return res.json({ success: false });
-//   }
-// };
-
 export const starMap = async (req: Request, res: Response) => {
   try {
     const mapId = req.params.mapId;
@@ -97,7 +83,6 @@ export const getMap = async (req: Request, res: Response) => {
       message: "Ban chua bat dau lo trinh nay",
     });
   }
-
   return res.json({
     success: true,
     data: {
