@@ -1,22 +1,21 @@
 import { Request, Response } from "express";
 import Comment from "../models/comment";
-
+import { COMMENT_LIMIT, REPLY_LIMIT } from "../lib/util/constants";
 export const getComment = async (req: Request, res: Response) => {
-  const LIMIT = 10;
   try {
     const page = req.params.page;
     const mapId = req.params.mapId;
 
-    let skip = parseInt(page) * LIMIT;
+    let skip = parseInt(page) * COMMENT_LIMIT;
     skip < 0 ? (skip = 0) : skip;
     const comments = await Comment.find({ mapId: mapId })
-      .limit(LIMIT + 1)
+      .limit(COMMENT_LIMIT + 1)
       .skip(skip)
       .select(["text", "userId", "createdAt", "replys", "userEmail"])
       .sort({ createdAt: -1 })
       .exec();
 
-    const hasMore = comments.length > LIMIT ? true : false;
+    const hasMore = comments.length > COMMENT_LIMIT ? true : false;
 
     hasMore && comments.pop();
 
@@ -50,20 +49,19 @@ export const getComment = async (req: Request, res: Response) => {
 };
 
 export const getReply = async (req: Request, res: Response) => {
-  const LIMIT = 5;
   try {
     const page = req.params.page;
     const mapId = req.params.mapId;
     const commentId = req.params.commentId;
 
-    let skip = parseInt(page) * LIMIT;
+    let skip = parseInt(page) * REPLY_LIMIT;
     skip < 0 ? (skip = 0) : skip;
     const comments = await Comment.findOne(
       { mapId: mapId, _id: commentId },
-      { replys: { $slice: [skip, skip + LIMIT + 1] } }
-    )
+      { replys: { $slice: [skip, skip + REPLY_LIMIT + 1] } }
+    );
 
-    const hasMore = comments.replys.length > LIMIT ? true : false;
+    const hasMore = comments.replys.length > REPLY_LIMIT ? true : false;
     hasMore && comments.replys.pop();
 
     return res.json({ success: true, replys: comments.replys, hasMore });

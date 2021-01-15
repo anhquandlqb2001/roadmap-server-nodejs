@@ -1,13 +1,8 @@
 import { Request, Response } from "express";
 import { formValidate } from "../lib/util/formValidate";
 import findOneAndUpdateOrCreate from "../lib/util/findOneAndUpdateOrCreate";
-// import User from "../models/user.model";
 import { IFormDataToClientSuccess, EProvider } from "../lib/types/form.type";
-
 import User from "../models/user";
-/**
- * /user/...
- **/
 
 // POST: Dang ky - Provider: local
 export const register = async (req: Request, res: Response) => {
@@ -106,6 +101,7 @@ export const current = async (req: Request, res: Response) => {
       email: user.email,
       jwt: user?.jwt,
       provider: user.provider,
+      _id: userId
     },
     map: mapArr,
   });

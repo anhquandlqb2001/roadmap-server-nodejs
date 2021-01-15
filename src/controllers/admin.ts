@@ -1,14 +1,10 @@
 import Map from "../models/map";
-import {
-  LaravelRoutingMap,
-  PHPRoad,
-  ReactRoad,
-  TestMap,
-} from "../lib/util/maps";
 import { Request, Response } from "express";
 import Common from "../models/common";
 import Admin from "../models/admin";
 import { uploadMapImage } from "../lib/config/cloudinary.config";
+import User from "../models/user";
+import pushNotification from "../lib/util/pushNotification";
 
 export const addRoad = async (req: Request, res: Response) => {
   try {
@@ -34,6 +30,28 @@ export const addRoad = async (req: Request, res: Response) => {
     map.mapUrl = result.url;
     await map.save();
     res.json({ success: true });
+
+    const users = await User.find({})
+    const pushNotificationPromises = users.map(async (user) => {
+      const payload = {
+        title: `Lộ trình mới!!! ${map.name}`,
+        text: `HEY ${
+          users[0].email.split("@")[0]
+        }! lotrinh vừa cập nhật lộ trình mới. Xem ngay!`,
+        tag: "new-map",
+        url: `/road/${map._id}`,
+      };
+      if (!user.subscription) {
+        return;
+      }
+      const pushNotificationPromise = pushNotification(
+        user.subscription,
+        payload
+      );
+      return pushNotificationPromise
+    });
+
+    Promise.all(pushNotificationPromises);
   } catch (error) {
     return res.json({ success: false });
   }

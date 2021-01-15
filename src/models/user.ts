@@ -21,6 +21,7 @@ export interface IUser {
   token?: string;
   expiresIn?: number;
   imageUrl?: string;
+  subscription?: any
 }
 
 export interface IUserDocument extends IUser, Document {
@@ -76,6 +77,9 @@ const UserSchema: mongoose.Schema = new Schema(
     maps: {
       type: [MapSchema],
     },
+    subscription: {
+      type: Schema.Types.Mixed
+    }
   },
   {
     collection: "users",

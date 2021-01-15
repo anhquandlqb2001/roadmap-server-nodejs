@@ -5,6 +5,7 @@ import appConfig from "./lib/config/app.config";
 import mongoose from 'mongoose'
 import config from './lib/config/endpoints.config'
 
+
 const main = async () => {
   
   
@@ -23,7 +24,6 @@ const main = async () => {
 
   const app = express();
   const PORT = process.env.PORT || 5000;
-
   appConfig(app);
   Routes(app);
   app.listen(PORT, () => console.log(`server on localhost:${PORT}`));
