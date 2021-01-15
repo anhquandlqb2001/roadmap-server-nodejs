@@ -1,12 +1,28 @@
 import { Router } from "express";
-import { handlePushNotificationSubscription, logout, sendPushNotification } from "../controllers/user.service";
+import {
+  getMap,
+  handlePushNotificationSubscription,
+  logout,
+  sendPushNotification,
+  startMap,
+  updateMap,
+} from "../controllers/user.service";
 
 const router = Router();
 
+router.get("/subscription/:subscriptionId", sendPushNotification);
+
+router.post("/subscription", handlePushNotificationSubscription);
+
 router.post("/logout", logout);
 
-router.get("/subscription/:subscriptionId", sendPushNotification)
+// lay thong tin road
+router.get("/:mapId", getMap);
 
-router.post("/subscription", handlePushNotificationSubscription)
+// bat dau road moi
+router.post("/:mapId", startMap);
 
-export default router
+// // cap nhat lo trinh
+router.put("/:mapId", updateMap);
+
+export default router;
