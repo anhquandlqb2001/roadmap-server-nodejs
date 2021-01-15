@@ -1,13 +1,12 @@
 import { Application } from "express";
 import session from "express-session";
-// import passport from "passport";
-import endpoints from "./endpoints.config";
 import { COOKIE_NAME } from "../util/constants";
 import cors from 'cors'
 import express from 'express'
 import connectRedis from "connect-redis";
 import Redis from "ioredis";
 import bodyParser from 'body-parser'
+import passport from "passport";
 
 
 const RedisStore = connectRedis(session);
@@ -38,9 +37,9 @@ const config = (app: Application) => {
   app.use(cors({ credentials: true, origin: ["http://localhost:3000", "http://localhost:3001"] }));
   app.use(express.json());
   app.use(bodyParser.urlencoded({ extended: false }));
-  // app.use(passport.initialize());
-  // app.use(passport.session());
-  // require("./passport.config")
+  require("./passport.config")
+  app.use(passport.initialize());
+  app.use(passport.session());
 }
 
 export default config

@@ -22,6 +22,7 @@ export interface IUser {
   expiresIn?: number;
   imageUrl?: string;
   subscription?: any
+  facebookId?: string
 }
 
 export interface IUserDocument extends IUser, Document {
@@ -79,6 +80,9 @@ const UserSchema: mongoose.Schema = new Schema(
     },
     subscription: {
       type: Schema.Types.Mixed
+    },
+    facebookId: {
+      type: String
     }
   },
   {
