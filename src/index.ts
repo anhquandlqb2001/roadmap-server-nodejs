@@ -7,8 +7,6 @@ import config from './lib/config/endpoints.config'
 
 
 const main = async () => {
-  
-  
   mongoose.connect(config.DATABASE_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

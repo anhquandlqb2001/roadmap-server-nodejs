@@ -1,9 +1,8 @@
 import webpush from 'web-push'
 
 const vapidKeys = {
-  privateKey: 'bdSiNzUhUP6piAxLH-tW88zfBlWWveIx0dAsDO66aVU',
-  publicKey:
-    'BIN2Jc5Vmkmy-S3AUrcMlpKxJpLeVRAfu9WBqUbJ70SJOCWGCGXKY-Xzyh7HDr6KbRDGYHjqZ06OcS3BjD7uAm8'
+  privateKey: process.env.WEBPUSH_PRIVATE_KEY,
+  publicKey: process.env.WEBPUSH_PUBLIC_KEY
 };
 
 webpush.setVapidDetails('mailto:example@yourdomain.org', vapidKeys.publicKey, vapidKeys.privateKey);
